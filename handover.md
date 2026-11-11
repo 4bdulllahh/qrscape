@@ -52,7 +52,7 @@ npm run dev
 | #   | Milestone                                                         | Size | Status |
 | --- | ----------------------------------------------------------------- | ---- | ------ |
 | M1  | Setup: docs, skeleton, theme tokens, CI, vercel.json              | M    | done   |
-| M2  | Core: link to QR grid, link to seed, tests                        | S    |        |
+| M2  | Core: link to QR grid, link to seed, tests                        | S    | done   |
 | M3  | Voxel engine: columns that project to the QR, ortho camera, morph | M    |        |
 | M4  | Tree scene + idle motion                                          | M    |        |
 | M5  | Site UI: paste, Reroll, scene picker, palettes (taste-skill)      | M    |        |
@@ -69,8 +69,8 @@ npm run dev
 
 ## Current state
 
-- **Last done:** M1 setup.
-- **Next:** M2 core.
+- **Last done:** M2 core: `makeQrGrid` (error correction H, UTF-8, 2-module quiet zone) and `seedFor` + `createRng` (FNV-1a + mulberry32).
+- **Next:** M3 voxel engine.
 - **Open questions:** live Vercel URL for the README (user sends it after M3).
 - **Known issues:** none.
 - **Not pushed:** all commits (ask before pushing).
