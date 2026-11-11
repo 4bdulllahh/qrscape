@@ -1,81 +1,144 @@
 # QRscape: handover
 
 For the next Claude session. The user starts it with **"continue read the handover"**: read this file, check
-`git status` and `git log --oneline -5`, say in 2 or 3 lines where things stand, then carry on with the next
-milestone. The plan below is already approved.
+`git status` and `git log --oneline -5`, say in 2 or 3 lines where things stand, then ask what to build next
+(the first plan is finished). New work follows the global workflow: playback, questions, milestone plan.
 
 ## What it is
 
-A website that turns a link into a QR code drawn as a calm voxel landscape (15 zen scenes). From a corner it is
-a little 3D world, from straight above it scans as a QR code. Shared as GIF/PNG or as a copy-paste embed. No
-backend, no accounts, nothing stored.
+A website that turns a link into a QR code drawn as a calm voxel world (15 zen scenes). From a corner it is a
+little 3D world; from straight above it scans as a QR code. Every link grows its own world from a seed. Shared as
+GIF/PNG (email) or a copy-paste embed for websites. No backend, no accounts, nothing stored.
 
-| What      | Where                                                              |
-| --------- | ------------------------------------------------------------------ |
-| Folder    | `C:\Users\Computer\Documents\GitHub\qrscape`, branch `main`        |
-| Remote    | https://github.com/4bdulllahh/qrscape                              |
-| Live site | https://qrscape-ten.vercel.app (Vercel, deploys on push to `main`) |
-| CI        | `.github/workflows/ci.yml`, runs `npm run check` on push           |
+| What      | Where                                                                     |
+| --------- | ------------------------------------------------------------------------- |
+| Folder    | `C:\Users\Computer\Documents\GitHub\qrscape`, branch `main`               |
+| Remote    | https://github.com/4bdulllahh/qrscape                                     |
+| Live site | https://qrscape-ten.vercel.app (Vercel, deploys itself on push to `main`) |
+| Embed     | https://qrscape-ten.vercel.app/qrscape.js (same deploy)                   |
+| CI        | `.github/workflows/ci.yml`, runs `npm run check` on push                  |
+| Version   | 0.1.0 (tag `v0.1.0`), in `package.json` only                              |
 
 ## Starting a session
 
 ```
 npm install
-npm run check
-npm run dev
-# Real scan test in Edge (not in CI, needs Edge):
-npm run build; npx vite preview   # then in a second terminal:
-npm run scan
+npm run check                    # lint, format check, typecheck, tests, build
+npm run dev                      # http://localhost:5173
 ```
+
+Browser checks (need Edge; not in CI). Build and preview first, then run them in a second terminal:
+
+```
+npm run build; npx vite preview  # http://localhost:4173
+```
+
+| Command                                                 | What it checks                                                                                                                                  |
+| ------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run scan` (or `node scripts/scan-check.mjs <url>`) | Every scene in the Scene list turns into its QR view and decodes (jsQR)                                                                         |
+| `node scripts/screens.mjs <url> <out>`                  | Desktop light + phone dark screenshots, axe, sideways scroll, page errors                                                                       |
+| `node scripts/scene-sheet.mjs <out> [link] [url]`       | One contact sheet image of all scenes, to eyeball them cheaply                                                                                  |
+| `node scripts/export-check.mjs <out> [url]`             | Downloads PNG and GIF, decodes the PNG and GIF frame 66                                                                                         |
+| `node scripts/embed-check.mjs <out> [url]`              | Pastes the copied embed code into a page on another origin (python http.server on 8765 serving `<out>/embedsite`) and checks the loop and hover |
+| `node scripts/make-assets.mjs [url]`                    | Redraws the logo SVG and renders the icons and `og-image.png`                                                                                   |
+
+Use the scratchpad folder for `<out>`, except `docs/screenshots` when refreshing README images. Pass the live URL to
+check production. Stop the preview and http.server afterwards (`netstat -ano | grep :4173`, then `taskkill`).
+
+## How it works
+
+```
+link ──► makeQrGrid (EC level H, UTF-8, 2-module quiet zone) ──► QrGrid (boolean per cell)
+   └──► seedFor(link, reroll) ──► createRng ──► pick scene, pick mood, then scene.build(size, rng)
+                                                        │
+VoxelGrid (x,z = QR cell, y = up) ◄─────────────────────┘
+   └──► colorize(grid, qr, palette): top voxel of each column = dark/light shade of its material by QR cell;
+        lower voxels = the natural "side" colour. Hidden voxels dropped. ──► ColoredVoxels
+             └──► ScapeRenderer (three.js InstancedMesh, baked face shading, no lights, orthographic camera)
+                  morph 0 = scenery orbit from a corner, 1 = straight down (QR), snapped to the nearest quarter turn
+```
+
+- `src/domain/world.ts` `makeWorld(link, { reroll, scene, palette })` is the single entry point for the site, the
+  embed and the exports. The seed always picks scene then palette, then builds, so overriding one never shifts the other.
+- Straight down with an orthographic camera only the top face of each column is visible, so the view is exactly the
+  QR in palette colours. Side faces never show. That is the whole trick.
 
 ## How the code is organised
 
-| Folder        | What's in it                                                                  |
-| ------------- | ----------------------------------------------------------------------------- |
-| `src/domain/` | Pure logic (seed, QR grid, voxel scenes). No three.js, no React. Fully tested |
-| `src/scene/`  | three.js renderer: draws a voxel scene, camera, scenery/QR morph              |
-| `src/ui/`     | React site. `strings.ts` holds every on-screen string (`t()`)                 |
-| `public/`     | `theme.js` boot script (kept out of the bundle for the CSP)                   |
+| Path                        | What's in it                                                                                                                            |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/domain/qr.ts`          | Link to QR grid, input checks (empty, too long)                                                                                         |
+| `src/domain/seed.ts`        | FNV-1a hash + mulberry32 random source                                                                                                  |
+| `src/domain/voxels.ts`      | `MATERIALS`, `VoxelGrid`, `colorize`, `projectTopDown`, `scanProblems`, `MIN_CONTRAST` = 3, idle `MOTION` per material                  |
+| `src/domain/palettes.ts`    | The 5 moods. 7 hand-tuned materials + 9 derived from one "side" colour via `derive()`                                                   |
+| `src/domain/scenes/`        | One file per scene, `shapes.ts` helpers (slab, box, cylinder, blob, line, growTree, scatter), `index.ts` = `SCENES` order               |
+| `src/domain/world.ts`       | `makeWorld`                                                                                                                             |
+| `src/domain/embedCode.ts`   | Builds the copy-paste snippet (escaped), parses `size`/`reroll` attributes                                                              |
+| `src/domain/gifTimeline.ts` | GIF frames: orbit swings -0.3 to +0.3 rad so both QR ends snap to the same quarter turn (seamless loop)                                 |
+| `src/scene/renderer.ts`     | `ScapeRenderer`: draw, orbit, morph, sway shader, `renderFrame` for export                                                              |
+| `src/embed/qrscape.ts`      | `<qr-scape>` custom element (shadow DOM, no React). Loop: QR 2.5 s on entering view, scenery 5 s, repeat; hover = QR; pauses off screen |
+| `src/services/`             | `exportPng`, `exportGif` + `gif.worker.ts` (gifenc), `download` helpers                                                                 |
+| `src/ui/`                   | React site: `App`, `SceneView` (lazy), `ExportPanel`, `EmbedPanel`, `ThemeToggle`, `strings.ts` (`t()`, `nameOf()`)                     |
+| `vite.embed.config.ts`      | Builds `src/embed/qrscape.ts` into `dist/qrscape.js` (one IIFE file with three.js)                                                      |
+| `public/`                   | `theme.js` (pre-paint theme, outside the bundle for the CSP), favicon, icons, `og-image.png`                                            |
+| `vercel.json`               | CSP (no inline scripts, no `unsafe-eval`), nosniff, referrer, permissions headers                                                       |
 
-## Decisions from the planning rounds
+## Recipes
 
-- Stack: Vite + React + plain three.js (so the embed can ship without React). Vercel hosting.
-- Embed: `<script src=".../qrscape.js">` + `<qr-scape link="..." size="300">` custom element.
-- Seed: same link gives the same scene; Reroll + scene picker override it, stored in the embed attributes.
-- Embed/site loop: 5 s scenery, 2.5 s QR, starts when scrolled into view, hover morphs to QR.
-- PNG = top-down QR in the terrain colours. GIF = ~4 s orbit then morph to QR and back, ~512 px, under 2 MB.
-- Gentle idle motion (stops on reduce-motion). 5 mood palettes, no free colour pickers.
-- English only via `t()`, MIT, version 0.1.0.
-- 15 scenes: tree, bonsai, mountains, fish bowl, zen garden, cherry blossom, koi pond, bamboo grove, torii gate,
-  tea house, coffee shop, tofu shop, ramen stall, lighthouse island, cactus pot.
-- Skills for this project: taste-skill (M5), web-asset-generator (M13), impeccable (M14). User installs them.
+**Add a scene**
 
-## Milestones
+1. Copy a similar file in `src/domain/scenes/`, export a `SceneDef` with a new `id`. Start with `slab(...)` so no
+   column is ever empty. Use only `rng` for randomness (never `Math.random`), and scale sizes with `size`.
+2. Add it to the end of `SCENES` in `scenes/index.ts`, and add `scene_<id>` to `src/ui/strings.ts`.
+3. `npm run check` (tests check it scans in every mood and names it), then `scene-sheet.mjs` to look at it, then `npm run scan`.
 
-| #   | Milestone                                                         | Size | Status |
-| --- | ----------------------------------------------------------------- | ---- | ------ |
-| M1  | Setup: docs, skeleton, theme tokens, CI, vercel.json              | M    | done   |
-| M2  | Core: link to QR grid, link to seed, tests                        | S    | done   |
-| M3  | Voxel engine: columns that project to the QR, ortho camera, morph | M    | done   |
-| M4  | Tree scene + idle motion                                          | M    | done   |
-| M5  | Site UI: paste, Reroll, scene picker, palettes (taste-skill)      | M    | done   |
-| M6  | Embed `<qr-scape>`: loop, in-view start, hover, Copy code panel   | M    | done   |
-| M7  | Export: PNG + GIF (web worker)                                    | M    | done   |
-| M8  | Scenes: bonsai, mountains, fish bowl                              | M    | done   |
-| M9  | Scenes: zen garden, cherry blossom, koi pond                      | M    | done   |
-| M10 | Scenes: bamboo grove, torii gate, tea house                       | M    | done   |
-| M11 | Scenes: coffee shop, tofu shop, ramen stall                       | M    | done   |
-| M12 | Scenes: lighthouse island, cactus pot                             | S    | done   |
-| M13 | Logo, favicon, social image (web-asset-generator)                 | S    | done   |
-| M14 | Polish: impeccable, axe, 390 px, real phone scan of all scenes    | M    | done   |
-| M15 | Release to Vercel: README, notes, tag                             | S    | done   |
+**Add a material:** add it to `MATERIALS` in `voxels.ts`, add a side colour to every mood's `sides` in
+`palettes.ts`, optionally a `MOTION` entry. The palette tests fail if contrast drops below 3.
+
+**Add a mood:** add an entry to `PALETTES` (hand shades + sides + tints) and `palette_<id>` to `strings.ts`.
+
+**Release:** follow the global release steps. Version lives only in `package.json`. Notes in `docs/releases/`,
+update `README.md`, `CHANGELOG.md`, `docs/roadmap.md`, tag `v<version>`. README screenshots: `screens.mjs` and
+`scene-sheet.mjs` against the **live** site into `docs/screenshots` (rename `desk-light-hero.png` to `hero.png`,
+delete the extras), so the embed code shows the real address. The gh CLI is not installed: the user makes GitHub releases by hand.
+
+## Rules that must not break
+
+- **Every scene must scan.** Never add a voxel above the top layer in a way that leaves a column empty, and never
+  colour a top voxel outside `colorize`. Why: the top view is the QR.
+- **Embeds already on websites must not change.** The snippet always writes `scene` and `palette`; keep old scene
+  ids and palette ids working forever, and don't change how an existing scene uses `rng` (it would reshape every
+  world of that scene, including pasted embeds). New scenes go at the end of `SCENES`. Note: adding a scene still
+  changes which scene a link gets when nothing is chosen (the site's "Surprise me"); that's accepted.
+- **`qrscape.js` must keep its name and attributes** (`link`, `scene`, `palette`, `reroll`, `size`): people load it
+  from their own sites.
+- **`src/domain/` never imports three.js, React or the DOM.** The embed must not import React or site CSS.
+- **No inline scripts** (CSP). Put boot code in `public/` as a file.
+- **Reduce-motion:** the live page stops orbit, sway and auto loop; exports (offscreen canvas) ignore it on purpose.
+- **Every UI string through `t()`**, no em/en dashes or the ellipsis character (a test checks `strings.ts`).
+
+## Decisions
+
+- Stack: Vite 8 + React 19 + TS strict + plain three.js (no r3f, so the embed stays React-free) + Tailwind 4, vitest, oxlint, prettier. Vercel.
+- QR at error correction H; quiet zone 2 modules (scans fine, keeps the world tight).
+- Seed: same link, same world; "Grow another one" = reroll salt; scene and mood pickers override.
+- GIF: 480 px, 12 fps, ~8 s, one shared 128-colour palette, ~0.8 MB. PNG: flat top view ~1024 px.
+- Embed loop 5 s scenery / 2.5 s QR, starts on scroll into view (threshold 0.4), hover shows QR.
+- Look: typencut's sand/navy tokens with an amber accent, `.dark` class, 2 columns on wide screens.
+- English only for now (strings ready for `t()`), MIT license.
+- Logo drawn in code (`scripts/make-assets.mjs`) because web-asset-generator was not loaded; no `.ico`, browsers use the SVG.
+
+## History
+
+v0.1.0 (2026-11-11) shipped milestones M1 to M15: setup, QR + seed core, voxel engine and morph, tree, site UI
+with reroll/scene/mood, embed, GIF/PNG export, 14 more scenes (M8 to M12), logo and icons, two-column layout and
+axe pass, release. Verified on the live site: all 15 scenes scan in a browser, exports decode, embed works from
+another origin, axe clean. The user confirmed it works, including on their phone.
 
 ## Current state
 
-- **Last done:** v0.1.0 released, pushed and tagged. Checked on the live site: all 15 scenes scan, PNG and GIF
-  decode, the embed works from another origin with the live script, axe clean, CSP and nosniff headers served.
-  README screenshots retaken from the live site. Every script in `scripts/` takes the site URL as an argument.
-- **Next:** Ask the user what comes next (ideas are in `docs/roadmap.md`).
-- **Open questions:** GitHub release for v0.1.0 (user creates it on github.com, gh CLI not installed); real phone scan by the user; what to build next.
-- **Known issues:** missing favicon (404) until M13. Browsers allow about 16 WebGL canvases per page, so more than ~16 embeds on one page will fail.
-- **Not pushed:** nothing.
+- **Last done:** v0.1.0 live, pushed and tagged; handover rewritten as a full guide.
+- **Next:** ask the user what to build. Candidates are in `docs/roadmap.md` (click embed to open link, iframe embed, more scenes, Arabic).
+- **Open questions:** whether the user made the GitHub release for `v0.1.0` (notes in `docs/releases/v0.1.0.md`).
+- **Known issues:** more than about 16 embeds on one page fail (browser limit on WebGL canvases). No `.ico` favicon.
+- **Not pushed:** see `git status`.
