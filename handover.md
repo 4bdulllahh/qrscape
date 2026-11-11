@@ -61,7 +61,7 @@ npm run scan
 | M5  | Site UI: paste, Reroll, scene picker, palettes (taste-skill)      | M    | done   |
 | M6  | Embed `<qr-scape>`: loop, in-view start, hover, Copy code panel   | M    | done   |
 | M7  | Export: PNG + GIF (web worker)                                    | M    | done   |
-| M8  | Scenes: bonsai, mountains, fish bowl                              | M    |        |
+| M8  | Scenes: bonsai, mountains, fish bowl                              | M    | done   |
 | M9  | Scenes: zen garden, cherry blossom, koi pond                      | M    |        |
 | M10 | Scenes: bamboo grove, torii gate, tea house                       | M    |        |
 | M11 | Scenes: coffee shop, tofu shop, ramen stall                       | M    |        |
@@ -72,12 +72,8 @@ npm run scan
 
 ## Current state
 
-- **Last done:** M7 export. PNG (`src/services/exportPng.ts`): flat top-down QR in terrain colours from
-  `projectTopDown`, ~1024 px. GIF (`exportGif.ts` + `gif.worker.ts`, gifenc): 480 px, 12 fps, ~8 s loop from
-  `domain/gifTimeline.ts` (orbit swings -0.3 to +0.3 rad so both ends snap to the same quarter turn: seamless).
-  One shared 128-colour palette. ~780 KB, under 1 s. Export code is lazy-loaded. Offscreen renders ignore
-  reduce-motion. `scripts/export-check.mjs` downloads both and decodes the PNG and GIF frame 66 with jsQR.
-- **Next:** M8 scenes: bonsai, mountains, fish bowl. Add materials to `MATERIALS` and every palette as needed (pot, glass...).
+- **Last done:** M8 scenes bonsai, mountains, fish bowl. New materials (pot, glass, wood, roof, cloth, snow, accent, fish, petal): each mood sets one natural colour and `derive()` in `palettes.ts` makes the dark/light shades. Shared shapes in `scenes/shapes.ts` (slab, box, cylinder, blob, line, growTree, scatter). `scripts/scene-sheet.mjs` renders every scene into one contact sheet.
+- **Next:** M9 scenes: zen garden, cherry blossom, koi pond.
 - **Open questions:** none.
 - **Known issues:** missing favicon (404) until M13. Browsers allow about 16 WebGL canvases per page, so more than ~16 embeds on one page will fail.
 - **Not pushed:** all commits (ask before pushing).

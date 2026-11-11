@@ -1,7 +1,24 @@
 import { contrast, luminance, mix } from './color'
 import { isDark, type QrGrid } from './qr'
 
-export const MATERIALS = ['soil', 'grass', 'stone', 'sand', 'water', 'trunk', 'leaf'] as const
+export const MATERIALS = [
+  'soil',
+  'grass',
+  'stone',
+  'sand',
+  'water',
+  'trunk',
+  'leaf',
+  'pot',
+  'glass',
+  'wood',
+  'roof',
+  'cloth',
+  'snow',
+  'accent',
+  'fish',
+  'petal',
+] as const
 export type Material = (typeof MATERIALS)[number]
 
 /** Each material has a shade for dark QR modules, one for light modules, and a natural side colour. */
@@ -65,11 +82,11 @@ export interface ColoredVoxels {
   /** Colour in the scenery view (soft QR on the tops) and in the QR view (full contrast tops). */
   sceneryColors: Uint32Array
   qrColors: Uint32Array
-  /** Idle motion per voxel: 0 still, 1 sways (leaves), 2 bobs (water). */
+  /** Idle motion per voxel: 0 still, 1 sways (leaves, petals, fish), 2 bobs (water). */
   motion: Uint8Array
 }
 
-const MOTION: Partial<Record<Material, number>> = { leaf: 1, water: 2 }
+const MOTION: Partial<Record<Material, number>> = { leaf: 1, petal: 1, fish: 1, water: 2 }
 
 /** How much of the QR shows on the tops in the scenery view: 0 is pure nature, 1 is the full QR. */
 const SCENERY_QR_STRENGTH = 0.55
