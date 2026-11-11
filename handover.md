@@ -62,7 +62,7 @@ npm run scan
 | M6  | Embed `<qr-scape>`: loop, in-view start, hover, Copy code panel   | M    | done   |
 | M7  | Export: PNG + GIF (web worker)                                    | M    | done   |
 | M8  | Scenes: bonsai, mountains, fish bowl                              | M    | done   |
-| M9  | Scenes: zen garden, cherry blossom, koi pond                      | M    |        |
+| M9  | Scenes: zen garden, cherry blossom, koi pond                      | M    | done   |
 | M10 | Scenes: bamboo grove, torii gate, tea house                       | M    |        |
 | M11 | Scenes: coffee shop, tofu shop, ramen stall                       | M    |        |
 | M12 | Scenes: lighthouse island, cactus pot                             | S    |        |
@@ -72,8 +72,8 @@ npm run scan
 
 ## Current state
 
-- **Last done:** M8 scenes bonsai, mountains, fish bowl. New materials (pot, glass, wood, roof, cloth, snow, accent, fish, petal): each mood sets one natural colour and `derive()` in `palettes.ts` makes the dark/light shades. Shared shapes in `scenes/shapes.ts` (slab, box, cylinder, blob, line, growTree, scatter). `scripts/scene-sheet.mjs` renders every scene into one contact sheet.
-- **Next:** M9 scenes: zen garden, cherry blossom, koi pond.
+- **Last done:** M9 scenes zen garden (raked ripples around mossy rocks, wooden border), cherry blossom (petal tree, fallen petals, bench), koi pond (sunken pond, stone edge, lily pads, koi, arched bridge).
+- **Next:** M10 scenes: bamboo grove, torii gate, tea house.
 - **Open questions:** none.
 - **Known issues:** missing favicon (404) until M13. Browsers allow about 16 WebGL canvases per page, so more than ~16 embeds on one page will fail.
 - **Not pushed:** all commits (ask before pushing).
