@@ -26,6 +26,11 @@ for (const [name, w, h, scheme] of [
   )
   console.log(name, 'axe', axe)
   await p.screenshot({ path: `${out}/${name}.png`, fullPage: true })
+  // README hero: the top of the page only (the embed code below shows the local server address).
+  await p.screenshot({
+    path: `${out}/${name}-hero.png`,
+    clip: { x: 0, y: 0, width: w, height: Math.min(h, 780) },
+  })
   console.log(name, 'scrollWidth', sw, 'errors', errors)
 }
 await b.close()

@@ -16,5 +16,9 @@
 
 ## Done
 
-| Item | Version |
-| ---- | ------- |
+| Item                                                    | Version |
+| ------------------------------------------------------- | ------- |
+| 15 seeded scenes that scan as QR codes, 5 moods, reroll | v0.1.0  |
+| GIF and PNG downloads                                   | v0.1.0  |
+| Website embed code with the scenery and QR loop         | v0.1.0  |
+| Light and dark themes, logo, icons, share image         | v0.1.0  |

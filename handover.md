@@ -68,12 +68,12 @@ npm run scan
 | M12 | Scenes: lighthouse island, cactus pot                             | S    | done   |
 | M13 | Logo, favicon, social image (web-asset-generator)                 | S    | done   |
 | M14 | Polish: impeccable, axe, 390 px, real phone scan of all scenes    | M    | done   |
-| M15 | Release to Vercel: README, notes, tag                             | S    |        |
+| M15 | Release to Vercel: README, notes, tag                             | S    | done   |
 
 ## Current state
 
-- **Last done:** M14 polish. Wide screens: two columns, the world sticky on the left, controls and sharing on the right; phones keep one column (controls, world, sharing). Scenery view framed tighter (0.68). axe-core runs inside `scripts/screens.mjs`: no violations in light or dark. All 15 scenes still decode. impeccable was not loaded, so no impeccable pass. Real-phone scan is up to the user.
-- **Next:** M15 release v0.1.0: release notes, README in full, CHANGELOG, roadmap Done, tag.
+- **Last done:** M15 release v0.1.0: README in full (logo, badges, hero, scene sheet, phone shot), `docs/releases/v0.1.0.md`, CHANGELOG, roadmap Done, tag `v0.1.0`. The approved plan is finished.
+- **Next:** Ask the user what comes next (ideas are in `docs/roadmap.md`).
 - **Open questions:** none.
 - **Known issues:** missing favicon (404) until M13. Browsers allow about 16 WebGL canvases per page, so more than ~16 embeds on one page will fail.
 - **Not pushed:** all commits (ask before pushing).
