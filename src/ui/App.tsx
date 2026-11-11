@@ -1,26 +1,32 @@
-import { useDeferredValue, useMemo, useState } from 'react'
-import { DAY } from '../domain/palettes'
-import { makeQrGrid } from '../domain/qr'
-import { buildScene } from '../domain/scenes'
-import { colorize } from '../domain/voxels'
-import { SceneView } from './SceneView'
-import { t } from './strings'
+import { lazy, Suspense, useDeferredValue, useMemo, useState } from 'react'
+import { PALETTE_IDS } from '../domain/palettes'
+import { SCENES } from '../domain/scenes'
+import { makeWorld } from '../domain/world'
+import { nameOf, t } from './strings'
 import { ThemeToggle } from './ThemeToggle'
 
+// three.js is most of the bundle: load it after the page has painted.
+const SceneView = lazy(() => import('./SceneView').then((m) => ({ default: m.SceneView })))
+
 const EXAMPLE_LINK = 'https://example.com'
+const button =
+  'rounded-full border border-line bg-surface-muted px-5 py-2 text-sm shadow-elev-1 hover:bg-canvas focus-visible:outline-2 focus-visible:outline-accent'
 
 export function App() {
   const [link, setLink] = useState('')
+  const [reroll, setReroll] = useState(0)
+  const [scene, setScene] = useState('')
+  const [palette, setPalette] = useState('')
   const [showQr, setShowQr] = useState(false)
   const typed = useDeferredValue(link)
 
   // Empty box shows an example world so the page is never blank; the box itself starts empty.
-  const result = useMemo(() => {
-    const value = typed.trim() || EXAMPLE_LINK
-    const qr = makeQrGrid(value)
-    if (!qr.ok) return { error: qr.reason }
-    return { voxels: colorize(buildScene(value, qr.grid.size).grid, qr.grid, DAY) }
-  }, [typed])
+  const result = useMemo(
+    () => makeWorld(typed.trim() || EXAMPLE_LINK, { reroll, scene, palette }),
+    [typed, reroll, scene, palette],
+  )
+  // The seed's own picks, shown next to "Surprise me".
+  const auto = useMemo(() => makeWorld(typed.trim() || EXAMPLE_LINK, { reroll }), [typed, reroll])
 
   return (
     <div className="mx-auto flex min-h-dvh max-w-5xl flex-col gap-6 px-4 py-6">
@@ -28,7 +34,7 @@ export function App() {
         <h1 className="text-2xl font-semibold tracking-tight">{t('appName')}</h1>
         <ThemeToggle />
       </header>
-      <main className="rounded-panel border-line bg-surface shadow-elev-1 flex flex-col items-center gap-6 border p-4 sm:p-6">
+      <main className="rounded-panel border-line bg-surface shadow-elev-1 flex flex-col items-center gap-5 border p-4 sm:p-6">
         <p className="text-fg-subtle text-center">{t('tagline')}</p>
         <label className="flex w-full max-w-xl flex-col gap-2">
           <span className="text-sm font-medium">{t('linkLabel')}</span>
@@ -36,27 +42,83 @@ export function App() {
             type="url"
             inputMode="url"
             value={link}
-            onChange={(e) => setLink(e.target.value)}
+            onChange={(e) => {
+              setLink(e.target.value)
+              setReroll(0)
+            }}
             placeholder={EXAMPLE_LINK}
             className="border-line bg-canvas text-fg placeholder:text-fg-subtle focus-visible:outline-accent w-full rounded-full border px-5 py-3 focus-visible:outline-2"
           />
         </label>
-        {'error' in result ? (
-          <p role="alert" className="text-fg text-sm">
-            {t(result.error === 'too-long' ? 'errorTooLong' : 'errorEmpty')}
-          </p>
+
+        {result.ok ? (
+          <Suspense
+            fallback={
+              <div className="text-fg-subtle grid aspect-square w-full max-w-[560px] place-items-center">
+                {t('loadingScene')}
+              </div>
+            }
+          >
+            <SceneView voxels={result.world.voxels} showQr={showQr} />
+          </Suspense>
         ) : (
-          <SceneView voxels={result.voxels} showQr={showQr} />
+          <p role="alert" className="text-fg text-sm">
+            {t(result.reason === 'too-long' ? 'errorTooLong' : 'errorEmpty')}
+          </p>
         )}
-        <button
-          type="button"
-          aria-pressed={showQr}
-          onClick={() => setShowQr((v) => !v)}
-          className="border-line bg-surface-muted shadow-elev-1 hover:bg-canvas focus-visible:outline-accent rounded-full border px-5 py-2 text-sm focus-visible:outline-2"
-        >
-          {t(showQr ? 'showScenery' : 'showQr')}
-        </button>
+
+        <div className="flex flex-wrap justify-center gap-3">
+          <button type="button" className={button} onClick={() => setReroll((r) => r + 1)}>
+            {t('reroll')}
+          </button>
+          <button type="button" aria-pressed={showQr} className={button} onClick={() => setShowQr((v) => !v)}>
+            {t(showQr ? 'showScenery' : 'showQr')}
+          </button>
+        </div>
         <p className="text-fg-subtle text-xs">{t('hoverHint')}</p>
+
+        <div className="flex w-full max-w-xl flex-col gap-4 sm:flex-row">
+          <label className="flex flex-1 flex-col gap-2">
+            <span className="text-sm font-medium">{t('scenePicker')}</span>
+            <select
+              value={scene}
+              onChange={(e) => setScene(e.target.value)}
+              className="border-line bg-canvas text-fg focus-visible:outline-accent rounded-full border px-4 py-2 focus-visible:outline-2"
+            >
+              <option value="">
+                {t('auto', { name: auto.ok ? nameOf('scene', auto.world.sceneId) : '' })}
+              </option>
+              {SCENES.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {nameOf('scene', s.id)}
+                </option>
+              ))}
+            </select>
+          </label>
+          <fieldset className="flex flex-[2] flex-col gap-2">
+            <legend className="mb-2 text-sm font-medium">{t('moodPicker')}</legend>
+            <div className="flex flex-wrap gap-2">
+              {['', ...PALETTE_IDS].map((id) => (
+                <label
+                  key={id || 'auto'}
+                  className="border-line has-checked:border-accent has-checked:bg-canvas has-focus-visible:outline-accent cursor-pointer rounded-full border px-3 py-1.5 text-sm has-focus-visible:outline-2"
+                >
+                  <input
+                    type="radio"
+                    name="palette"
+                    value={id}
+                    checked={palette === id}
+                    onChange={() => setPalette(id)}
+                    className="sr-only"
+                  />
+                  {id
+                    ? nameOf('palette', id)
+                    : t('auto', { name: auto.ok ? nameOf('palette', auto.world.paletteId) : '' })}
+                </label>
+              ))}
+            </div>
+          </fieldset>
+        </div>
       </main>
     </div>
   )

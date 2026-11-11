@@ -58,7 +58,7 @@ npm run scan
 | M2  | Core: link to QR grid, link to seed, tests                        | S    | done   |
 | M3  | Voxel engine: columns that project to the QR, ortho camera, morph | M    | done   |
 | M4  | Tree scene + idle motion                                          | M    | done   |
-| M5  | Site UI: paste, Reroll, scene picker, palettes (taste-skill)      | M    |        |
+| M5  | Site UI: paste, Reroll, scene picker, palettes (taste-skill)      | M    | done   |
 | M6  | Embed `<qr-scape>`: loop, in-view start, hover, Copy code panel   | M    |        |
 | M7  | Export: PNG + GIF (web worker)                                    | M    |        |
 | M8  | Scenes: bonsai, mountains, fish bowl                              | M    |        |
@@ -72,10 +72,13 @@ npm run scan
 
 ## Current state
 
-- **Last done:** M4 tree scene (`src/domain/scenes/tree.ts`: island with mound, seeded trunk lean, 3 to 5
-  branches with leaf blobs, stones). Idle motion: `ColoredVoxels.motion` (leaf sways, water bobs) drives a
-  vertex shader tweak in `ScapeRenderer`; it fades to zero towards the QR view and with reduce-motion.
-- **Next:** M5 site UI: Reroll, scene picker, 5 mood palettes, lazy-load the 3D view.
+- **Last done:** M5 site UI. `src/domain/world.ts` `makeWorld(link, {reroll, scene, palette})` is the one entry
+  point (site and embed). The seed always picks scene then palette, then builds, so overrides don't shift each
+  other. 5 palettes in `palettes.ts` (day, blossom, autumn, dusk, night), all contrast-tested on every scene.
+  UI: Grow another one (reroll), scene select and mood radios with "Surprise me (seed pick)". SceneView is
+  lazy-loaded. `scripts/screens.mjs` screenshots desktop light + phone dark and reports errors and overflow.
+  taste-skill was not loaded in this session, so the design is still typencut tokens only.
+- **Next:** M6 embed: `src/embed/qrscape.ts` custom element built as a separate IIFE into `dist/qrscape.js`.
 - **Open questions:** none.
-- **Known issues:** build warns that the JS chunk is over 500 KB (three.js). Lazy-load the scene in M5.
+- **Known issues:** missing favicon (404) until M13.
 - **Not pushed:** all commits (ask before pushing).

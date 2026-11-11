@@ -48,4 +48,5 @@ npm run dev        # http://localhost:5173
 npm run check      # lint, format check, typecheck, tests, build (what CI runs)
 npm run build      # production build in dist/
 npm run scan       # with `npx vite preview` running: decodes every QR view in Edge
+node scripts/screens.mjs http://localhost:4173 <out-dir>   # desktop + phone screenshots
 ```
