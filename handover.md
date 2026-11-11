@@ -67,13 +67,13 @@ npm run scan
 | M11 | Scenes: coffee shop, tofu shop, ramen stall                       | M    | done   |
 | M12 | Scenes: lighthouse island, cactus pot                             | S    | done   |
 | M13 | Logo, favicon, social image (web-asset-generator)                 | S    | done   |
-| M14 | Polish: impeccable, axe, 390 px, real phone scan of all scenes    | M    |        |
+| M14 | Polish: impeccable, axe, 390 px, real phone scan of all scenes    | M    | done   |
 | M15 | Release to Vercel: README, notes, tag                             | S    |        |
 
 ## Current state
 
-- **Last done:** M13 logo: isometric voxel block with a QR top and a tiny tree, drawn in code by `scripts/make-assets.mjs` (also renders apple-touch-icon, icon-512 and the og-image from a live scene). Favicon, Open Graph and Twitter tags in `index.html`, logo in the header. web-asset-generator was not loaded, so no .ico (modern browsers use the SVG).
-- **Next:** M14 polish: axe accessibility check, layout polish, ask the user to scan a few scenes with a real phone.
+- **Last done:** M14 polish. Wide screens: two columns, the world sticky on the left, controls and sharing on the right; phones keep one column (controls, world, sharing). Scenery view framed tighter (0.68). axe-core runs inside `scripts/screens.mjs`: no violations in light or dark. All 15 scenes still decode. impeccable was not loaded, so no impeccable pass. Real-phone scan is up to the user.
+- **Next:** M15 release v0.1.0: release notes, README in full, CHANGELOG, roadmap Done, tag.
 - **Open questions:** none.
 - **Known issues:** missing favicon (404) until M13. Browsers allow about 16 WebGL canvases per page, so more than ~16 embeds on one page will fail.
 - **Not pushed:** all commits (ask before pushing).

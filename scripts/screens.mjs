@@ -1,4 +1,5 @@
-// Screenshots the site on desktop (light) and phone (dark) and reports page errors and sideways scrolling.
+// Screenshots the site on desktop (light) and phone (dark) and reports page errors, sideways scrolling and axe
+// accessibility violations.
 // Usage: with `npx vite preview` running: node scripts/screens.mjs [url] [out-dir]
 import { chromium } from 'playwright-core'
 const url = process.argv[2] ?? 'http://localhost:4173'
@@ -19,6 +20,11 @@ for (const [name, w, h, scheme] of [
   await p.getByText('Autumn').click()
   await p.waitForTimeout(1500)
   const sw = await p.evaluate(() => document.documentElement.scrollWidth)
+  await p.addScriptTag({ path: 'node_modules/axe-core/axe.min.js' })
+  const axe = await p.evaluate(async () =>
+    (await window.axe.run()).violations.map((v) => `${v.id} (${v.nodes.length}): ${v.nodes[0]?.target}`),
+  )
+  console.log(name, 'axe', axe)
   await p.screenshot({ path: `${out}/${name}.png`, fullPage: true })
   console.log(name, 'scrollWidth', sw, 'errors', errors)
 }

@@ -183,7 +183,7 @@ ${shader.vertexShader}`.replace(
     this.camera.lookAt(0, cy, 0)
 
     const aspect = this.width() / Math.max(1, this.height())
-    const sceneryHalf = v.size * 0.78
+    const sceneryHalf = v.size * 0.68
     const qrHalf = v.size * 0.5
     const half = sceneryHalf + (qrHalf - sceneryHalf) * e
     const hx = aspect >= 1 ? half * aspect : half

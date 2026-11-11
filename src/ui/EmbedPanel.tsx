@@ -29,7 +29,7 @@ export function EmbedPanel({ link, sceneId, paletteId, reroll }: Props) {
   }
 
   return (
-    <section aria-labelledby="embed-title" className="flex w-full max-w-xl flex-col gap-3">
+    <section aria-labelledby="embed-title" className="flex w-full flex-col gap-3">
       <h2 id="embed-title" className="text-lg font-semibold">
         {t('embedTitle')}
       </h2>

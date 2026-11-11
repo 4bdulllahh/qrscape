@@ -46,7 +46,7 @@ export function ExportPanel({ world, link }: Props) {
     }, 'png')
 
   return (
-    <section aria-labelledby="share-title" className="flex w-full max-w-xl flex-col gap-3">
+    <section aria-labelledby="share-title" className="flex w-full flex-col gap-3">
       <h2 id="share-title" className="text-lg font-semibold">
         {t('shareTitle')}
       </h2>
