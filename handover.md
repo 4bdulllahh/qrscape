@@ -64,7 +64,7 @@ npm run scan
 | M8  | Scenes: bonsai, mountains, fish bowl                              | M    | done   |
 | M9  | Scenes: zen garden, cherry blossom, koi pond                      | M    | done   |
 | M10 | Scenes: bamboo grove, torii gate, tea house                       | M    | done   |
-| M11 | Scenes: coffee shop, tofu shop, ramen stall                       | M    |        |
+| M11 | Scenes: coffee shop, tofu shop, ramen stall                       | M    | done   |
 | M12 | Scenes: lighthouse island, cactus pot                             | S    |        |
 | M13 | Logo, favicon, social image (web-asset-generator)                 | S    |        |
 | M14 | Polish: impeccable, axe, 390 px, real phone scan of all scenes    | M    |        |
@@ -72,8 +72,8 @@ npm run scan
 
 ## Current state
 
-- **Last done:** M10 scenes bamboo grove (swaying stalks with nodes, stepping-stone S path), torii gate (gate in water, shore with stone lanterns), tea house (raised floor, paper walls with posts, hipped roof, path, bush).
-- **Next:** M11 scenes: coffee shop, tofu shop, ramen stall.
+- **Last done:** M11 scenes coffee shop (window, striped awning, sign, tables with cups, potted plants), tofu shop (gable roof, noren, lantern, crates of tofu, water tub), ramen stall (cart on wheels, canopy, noren, lanterns, steaming bowl, stools).
+- **Next:** M12 scenes: lighthouse island, cactus pot, then the full browser scan of all 15.
 - **Open questions:** none.
 - **Known issues:** missing favicon (404) until M13. Browsers allow about 16 WebGL canvases per page, so more than ~16 embeds on one page will fail.
 - **Not pushed:** all commits (ask before pushing).

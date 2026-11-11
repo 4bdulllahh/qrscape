@@ -1,10 +1,13 @@
 import { bamboo } from './bamboo'
 import { bonsai } from './bonsai'
 import { cherryblossom } from './cherryblossom'
+import { coffeeshop } from './coffeeshop'
 import { fishbowl } from './fishbowl'
 import { koipond } from './koipond'
 import { mountains } from './mountains'
+import { ramenstall } from './ramenstall'
 import { teahouse } from './teahouse'
+import { tofushop } from './tofushop'
 import { torii } from './torii'
 import { tree } from './tree'
 import type { SceneDef } from './types'
@@ -21,4 +24,7 @@ export const SCENES: readonly SceneDef[] = [
   bamboo,
   torii,
   teahouse,
+  coffeeshop,
+  tofushop,
+  ramenstall,
 ]
