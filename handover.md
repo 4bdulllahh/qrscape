@@ -65,15 +65,15 @@ npm run scan
 | M9  | Scenes: zen garden, cherry blossom, koi pond                      | M    | done   |
 | M10 | Scenes: bamboo grove, torii gate, tea house                       | M    | done   |
 | M11 | Scenes: coffee shop, tofu shop, ramen stall                       | M    | done   |
-| M12 | Scenes: lighthouse island, cactus pot                             | S    |        |
+| M12 | Scenes: lighthouse island, cactus pot                             | S    | done   |
 | M13 | Logo, favicon, social image (web-asset-generator)                 | S    |        |
 | M14 | Polish: impeccable, axe, 390 px, real phone scan of all scenes    | M    |        |
 | M15 | Release to Vercel: README, notes, tag                             | S    |        |
 
 ## Current state
 
-- **Last done:** M11 scenes coffee shop (window, striped awning, sign, tables with cups, potted plants), tofu shop (gable roof, noren, lantern, crates of tofu, water tub), ramen stall (cart on wheels, canopy, noren, lanterns, steaming bowl, stools).
-- **Next:** M12 scenes: lighthouse island, cactus pot, then the full browser scan of all 15.
+- **Last done:** M12 scenes lighthouse island (rocky island, striped tower, lamp room, cottage) and cactus pot (tapered pot, 3-wide stem, 2-3 arms, flower, pebbles). All 15 scenes done. `npm run scan` now picks every scene and decoded all 15 in Edge.
+- **Next:** M13 logo, favicon and social share image (web-asset-generator skill, user installs it). Then M14 polish, M15 release.
 - **Open questions:** none.
 - **Known issues:** missing favicon (404) until M13. Browsers allow about 16 WebGL canvases per page, so more than ~16 embeds on one page will fail.
 - **Not pushed:** all commits (ask before pushing).

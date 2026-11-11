@@ -1,4 +1,4 @@
-// Opens the site in Edge, turns each world into its QR view and decodes the canvas with jsQR.
+// Opens the site in Edge, turns every scene into its QR view and decodes the canvas with jsQR.
 // Usage: npm run build && npx vite preview, then: node scripts/scan-check.mjs [url] [screenshot-dir]
 import { chromium } from 'playwright-core'
 import jsQR from 'jsqr'
@@ -16,15 +16,20 @@ const browser = await chromium.launch({ executablePath: edge })
 const page = await browser.newPage({ viewport: { width: 1200, height: 900 } })
 await page.goto(url)
 let failed = 0
-for (const [i, link] of links.entries()) {
+const select = page.getByRole('combobox', { name: 'Scene' })
+const scenes = (await select.locator('option').evaluateAll((o) => o.map((x) => x.value))).filter(Boolean)
+// Every scene once, cycling through the test links.
+for (const [i, scene] of scenes.entries()) {
+  const link = links[i % links.length]
   await page.getByRole('textbox', { name: 'Your link' }).fill(link)
+  await select.selectOption(scene)
   const canvas = page.locator('canvas')
   await page.waitForTimeout(1300)
-  if (shots) await canvas.screenshot({ path: `${shots}/scenery-${i}.png` })
+  if (shots) await canvas.screenshot({ path: `${shots}/scenery-${scene}.png` })
   await page.getByRole('button', { name: 'Show QR code' }).click()
   await page.mouse.move(0, 0)
   await page.waitForTimeout(1600)
-  if (shots) await canvas.screenshot({ path: `${shots}/qr-${i}.png` })
+  if (shots) await canvas.screenshot({ path: `${shots}/qr-${scene}.png` })
   const { data, size } = await page.evaluate(() => {
     const src = document.querySelector('canvas')
     const size = 400
@@ -39,7 +44,7 @@ for (const [i, link] of links.entries()) {
   const code = jsQR(Uint8ClampedArray.from(data), size, size)
   const ok = code?.data === link
   if (!ok) failed++
-  console.log(`${ok ? 'PASS' : 'FAIL'} ${link}${ok ? '' : ` (read: ${code?.data ?? 'nothing'})`}`)
+  console.log(`${ok ? 'PASS' : 'FAIL'} ${scene} ${link}${ok ? '' : ` (read: ${code?.data ?? 'nothing'})`}`)
   await page.getByRole('button', { name: 'Show scenery' }).click()
 }
 await browser.close()

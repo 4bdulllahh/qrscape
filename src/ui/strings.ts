@@ -49,6 +49,8 @@ export const strings = {
   scene_coffeeshop: 'Coffee shop',
   scene_tofushop: 'Tofu shop',
   scene_ramenstall: 'Ramen stall',
+  scene_lighthouse: 'Lighthouse island',
+  scene_cactus: 'Cactus pot',
   palette_day: 'Day',
   palette_blossom: 'Blossom',
   palette_autumn: 'Autumn',
