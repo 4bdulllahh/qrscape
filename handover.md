@@ -59,7 +59,7 @@ npm run scan
 | M3  | Voxel engine: columns that project to the QR, ortho camera, morph | M    | done   |
 | M4  | Tree scene + idle motion                                          | M    | done   |
 | M5  | Site UI: paste, Reroll, scene picker, palettes (taste-skill)      | M    | done   |
-| M6  | Embed `<qr-scape>`: loop, in-view start, hover, Copy code panel   | M    |        |
+| M6  | Embed `<qr-scape>`: loop, in-view start, hover, Copy code panel   | M    | done   |
 | M7  | Export: PNG + GIF (web worker)                                    | M    |        |
 | M8  | Scenes: bonsai, mountains, fish bowl                              | M    |        |
 | M9  | Scenes: zen garden, cherry blossom, koi pond                      | M    |        |
@@ -72,13 +72,13 @@ npm run scan
 
 ## Current state
 
-- **Last done:** M5 site UI. `src/domain/world.ts` `makeWorld(link, {reroll, scene, palette})` is the one entry
-  point (site and embed). The seed always picks scene then palette, then builds, so overrides don't shift each
-  other. 5 palettes in `palettes.ts` (day, blossom, autumn, dusk, night), all contrast-tested on every scene.
-  UI: Grow another one (reroll), scene select and mood radios with "Surprise me (seed pick)". SceneView is
-  lazy-loaded. `scripts/screens.mjs` screenshots desktop light + phone dark and reports errors and overflow.
-  taste-skill was not loaded in this session, so the design is still typencut tokens only.
-- **Next:** M6 embed: `src/embed/qrscape.ts` custom element built as a separate IIFE into `dist/qrscape.js`.
+- **Last done:** M6 embed. `src/embed/qrscape.ts` defines `<qr-scape>` (shadow DOM, no React), built by
+  `vite.embed.config.ts` into `dist/qrscape.js` (IIFE, ~143 KB gzip). Loop: QR 2.5 s when it scrolls into view,
+  then scenery 5 s, repeat; hover shows QR; pauses off screen; no auto loop with reduce-motion.
+  `src/domain/embedCode.ts` builds the snippet (always writes scene + palette so new scenes never change old
+  embeds) and parses attributes. Site has the Put it on your website panel with 3 sizes and Copy code.
+  `scripts/embed-check.mjs` tests it on a page from another origin.
+- **Next:** M7 export: PNG from `projectTopDown`, GIF via offscreen renderer + gifenc in a web worker.
 - **Open questions:** none.
-- **Known issues:** missing favicon (404) until M13.
+- **Known issues:** missing favicon (404) until M13. Browsers allow about 16 WebGL canvases per page, so more than ~16 embeds on one page will fail.
 - **Not pushed:** all commits (ask before pushing).

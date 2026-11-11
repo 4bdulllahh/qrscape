@@ -2,6 +2,7 @@ import { lazy, Suspense, useDeferredValue, useMemo, useState } from 'react'
 import { PALETTE_IDS } from '../domain/palettes'
 import { SCENES } from '../domain/scenes'
 import { makeWorld } from '../domain/world'
+import { EmbedPanel } from './EmbedPanel'
 import { nameOf, t } from './strings'
 import { ThemeToggle } from './ThemeToggle'
 
@@ -119,6 +120,14 @@ export function App() {
             </div>
           </fieldset>
         </div>
+        {result.ok && (
+          <EmbedPanel
+            link={typed.trim() || EXAMPLE_LINK}
+            sceneId={result.world.sceneId}
+            paletteId={result.world.paletteId}
+            reroll={reroll}
+          />
+        )}
       </main>
     </div>
   )
