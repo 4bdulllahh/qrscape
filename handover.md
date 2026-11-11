@@ -23,6 +23,9 @@ backend, no accounts, nothing stored.
 npm install
 npm run check
 npm run dev
+# Real scan test in Edge (not in CI, needs Edge):
+npm run build; npx vite preview   # then in a second terminal:
+npm run scan
 ```
 
 ## How the code is organised
@@ -53,7 +56,7 @@ npm run dev
 | --- | ----------------------------------------------------------------- | ---- | ------ |
 | M1  | Setup: docs, skeleton, theme tokens, CI, vercel.json              | M    | done   |
 | M2  | Core: link to QR grid, link to seed, tests                        | S    | done   |
-| M3  | Voxel engine: columns that project to the QR, ortho camera, morph | M    |        |
+| M3  | Voxel engine: columns that project to the QR, ortho camera, morph | M    | done   |
 | M4  | Tree scene + idle motion                                          | M    |        |
 | M5  | Site UI: paste, Reroll, scene picker, palettes (taste-skill)      | M    |        |
 | M6  | Embed `<qr-scape>`: loop, in-view start, hover, Copy code panel   | M    |        |
@@ -69,8 +72,12 @@ npm run dev
 
 ## Current state
 
-- **Last done:** M2 core: `makeQrGrid` (error correction H, UTF-8, 2-module quiet zone) and `seedFor` + `createRng` (FNV-1a + mulberry32).
-- **Next:** M3 voxel engine.
+- **Last done:** M3 voxel engine. `VoxelGrid` + `colorize` (top voxel takes the dark/light shade of its material
+  by QR module, sides keep natural colour) + `scanProblems`. `ScapeRenderer` draws instanced cubes with baked
+  shading (no lights, so tops are exact palette colours), orthographic camera, slow orbit, 1.1 s morph to straight
+  down snapped to the nearest quarter turn. Placeholder scene `meadow`. Hover/focus or the button shows the QR.
+  Browser scan check passes for 3 links.
+- **Next:** M4 tree scene: add `src/domain/scenes/tree.ts`, drop `meadow` from `SCENES` (keep tests generic).
 - **Open questions:** live Vercel URL for the README (user sends it after M3).
-- **Known issues:** none.
+- **Known issues:** build warns that the JS chunk is over 500 KB (three.js). Lazy-load the scene in M5.
 - **Not pushed:** all commits (ask before pushing).
