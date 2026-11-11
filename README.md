@@ -8,7 +8,7 @@ Every link grows a different world. Share it as a GIF, or paste the embed code i
 
 Free, private and runs entirely in your browser. No account, no server, nothing stored.
 
-**Status:** in development, version 0.1.0.
+**Live:** https://qrscape-ten.vercel.app � **Status:** in development, version 0.1.0.
 
 ## Develop
 

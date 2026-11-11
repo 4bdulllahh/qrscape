@@ -10,12 +10,12 @@ A website that turns a link into a QR code drawn as a calm voxel landscape (15 z
 a little 3D world, from straight above it scans as a QR code. Shared as GIF/PNG or as a copy-paste embed. No
 backend, no accounts, nothing stored.
 
-| What      | Where                                                       |
-| --------- | ----------------------------------------------------------- |
-| Folder    | `C:\Users\Computer\Documents\GitHub\qrscape`, branch `main` |
-| Remote    | https://github.com/4bdulllahh/qrscape                       |
-| Live site | not deployed yet (user deploys to Vercel after M3)          |
-| CI        | `.github/workflows/ci.yml`, runs `npm run check` on push    |
+| What      | Where                                                              |
+| --------- | ------------------------------------------------------------------ |
+| Folder    | `C:\Users\Computer\Documents\GitHub\qrscape`, branch `main`        |
+| Remote    | https://github.com/4bdulllahh/qrscape                              |
+| Live site | https://qrscape-ten.vercel.app (Vercel, deploys on push to `main`) |
+| CI        | `.github/workflows/ci.yml`, runs `npm run check` on push           |
 
 ## Starting a session
 
@@ -57,7 +57,7 @@ npm run scan
 | M1  | Setup: docs, skeleton, theme tokens, CI, vercel.json              | M    | done   |
 | M2  | Core: link to QR grid, link to seed, tests                        | S    | done   |
 | M3  | Voxel engine: columns that project to the QR, ortho camera, morph | M    | done   |
-| M4  | Tree scene + idle motion                                          | M    |        |
+| M4  | Tree scene + idle motion                                          | M    | done   |
 | M5  | Site UI: paste, Reroll, scene picker, palettes (taste-skill)      | M    |        |
 | M6  | Embed `<qr-scape>`: loop, in-view start, hover, Copy code panel   | M    |        |
 | M7  | Export: PNG + GIF (web worker)                                    | M    |        |
@@ -72,12 +72,10 @@ npm run scan
 
 ## Current state
 
-- **Last done:** M3 voxel engine. `VoxelGrid` + `colorize` (top voxel takes the dark/light shade of its material
-  by QR module, sides keep natural colour) + `scanProblems`. `ScapeRenderer` draws instanced cubes with baked
-  shading (no lights, so tops are exact palette colours), orthographic camera, slow orbit, 1.1 s morph to straight
-  down snapped to the nearest quarter turn. Placeholder scene `meadow`. Hover/focus or the button shows the QR.
-  Browser scan check passes for 3 links.
-- **Next:** M4 tree scene: add `src/domain/scenes/tree.ts`, drop `meadow` from `SCENES` (keep tests generic).
-- **Open questions:** live Vercel URL for the README (user sends it after M3).
+- **Last done:** M4 tree scene (`src/domain/scenes/tree.ts`: island with mound, seeded trunk lean, 3 to 5
+  branches with leaf blobs, stones). Idle motion: `ColoredVoxels.motion` (leaf sways, water bobs) drives a
+  vertex shader tweak in `ScapeRenderer`; it fades to zero towards the QR view and with reduce-motion.
+- **Next:** M5 site UI: Reroll, scene picker, 5 mood palettes, lazy-load the 3D view.
+- **Open questions:** none.
 - **Known issues:** build warns that the JS chunk is over 500 KB (three.js). Lazy-load the scene in M5.
 - **Not pushed:** all commits (ask before pushing).

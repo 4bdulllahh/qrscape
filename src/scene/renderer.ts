@@ -41,6 +41,8 @@ export class ScapeRenderer {
   private readonly camera = new OrthographicCamera()
   private readonly geometry = shadedCube()
   private readonly material = new MeshBasicMaterial({ vertexColors: true })
+  private readonly uniforms = { uTime: { value: 0 }, uSway: { value: 1 } }
+  private time = 0
   private mesh: InstancedMesh | null = null
   private voxels: ColoredVoxels | null = null
   private scenery: Float32Array = new Float32Array()
@@ -58,6 +60,20 @@ export class ScapeRenderer {
     // preserveDrawingBuffer so PNG export and screenshots can read the canvas.
     this.renderer = new WebGLRenderer({ canvas, antialias: false, alpha: true, preserveDrawingBuffer: true })
     this.renderer.setPixelRatio(Math.min(devicePixelRatio, 2))
+    this.material.onBeforeCompile = (shader) => {
+      Object.assign(shader.uniforms, this.uniforms)
+      shader.vertexShader = `attribute float motion;
+uniform float uTime;
+uniform float uSway;
+${shader.vertexShader}`.replace(
+        '#include <begin_vertex>',
+        `#include <begin_vertex>
+        vec3 ip = instanceMatrix[3].xyz;
+        float ph = uTime * 1.4 + ip.x * 0.35 + ip.z * 0.25 + ip.y * 0.2;
+        if (motion > 0.5 && motion < 1.5) transformed.xz += vec2(sin(ph), cos(ph * 0.8)) * 0.06 * uSway * min(ip.y / 10.0, 1.5);
+        else if (motion > 1.5) transformed.y += sin(ph * 1.3) * 0.08 * uSway;`,
+      )
+    }
   }
 
   setVoxels(voxels: ColoredVoxels): void {
@@ -81,6 +97,7 @@ export class ScapeRenderer {
     }
     this.scenery = toLinear(voxels.sceneryColors)
     this.qr = toLinear(voxels.qrColors)
+    this.geometry.setAttribute('motion', new InstancedBufferAttribute(Float32Array.from(voxels.motion), 1))
     mesh.instanceColor = new InstancedBufferAttribute(new Float32Array(voxels.count * 3), 3)
     mesh.instanceColor.setUsage(DynamicDrawUsage)
     this.mesh = mesh
@@ -124,6 +141,7 @@ export class ScapeRenderer {
   private step(dt: number): void {
     const dir = Math.sign(this.morphTarget - this.morph)
     this.morph = Math.min(1, Math.max(0, this.morph + (dir * dt) / MORPH_SECONDS))
+    this.time += dt
     if (this.morph === 0 && !this.reducedMotion.matches) this.azimuth += dt * ORBIT_RADIANS_PER_SECOND
     this.render()
   }
@@ -133,6 +151,9 @@ export class ScapeRenderer {
     if (!v || !this.mesh) return
     this.resize()
     const e = this.reducedMotion.matches ? Math.round(this.morph) : ease(this.morph)
+    // Motion fades out on the way to the QR so the code is perfectly still when scanned.
+    this.uniforms.uTime.value = this.time
+    this.uniforms.uSway.value = this.reducedMotion.matches ? 0 : 1 - e
 
     // Any quarter turn of a QR still scans, so snap to the nearest one instead of spinning back to 0.
     const quarter = Math.PI / 2

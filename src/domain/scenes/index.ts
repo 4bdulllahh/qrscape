@@ -1,9 +1,9 @@
 import { createRng, seedFor } from '../seed'
 import type { VoxelGrid } from '../voxels'
-import { meadow } from './meadow'
+import { tree } from './tree'
 import type { SceneDef } from './types'
 
-export const SCENES: readonly SceneDef[] = [meadow]
+export const SCENES: readonly SceneDef[] = [tree]
 
 /** The link's own scene, picked by its seed, unless the user chose one. */
 export function buildScene(

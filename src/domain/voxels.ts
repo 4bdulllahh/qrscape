@@ -65,7 +65,11 @@ export interface ColoredVoxels {
   /** Colour in the scenery view (soft QR on the tops) and in the QR view (full contrast tops). */
   sceneryColors: Uint32Array
   qrColors: Uint32Array
+  /** Idle motion per voxel: 0 still, 1 sways (leaves), 2 bobs (water). */
+  motion: Uint8Array
 }
+
+const MOTION: Partial<Record<Material, number>> = { leaf: 1, water: 2 }
 
 /** How much of the QR shows on the tops in the scenery view: 0 is pure nature, 1 is the full QR. */
 const SCENERY_QR_STRENGTH = 0.55
@@ -75,6 +79,7 @@ export function colorize(grid: VoxelGrid, qr: QrGrid, palette: Palette): Colored
   const positions: number[] = []
   const scenery: number[] = []
   const qrColors: number[] = []
+  const motion: number[] = []
   const open = (x: number, y: number, z: number) => grid.get(x, y, z) === undefined
 
   for (let z = 0; z < grid.size; z++)
@@ -92,6 +97,7 @@ export function colorize(grid: VoxelGrid, qr: QrGrid, palette: Palette): Colored
         if (!visible) continue
         const shade = palette[m]
         positions.push(x, y, z)
+        motion.push(MOTION[m] ?? 0)
         if (y === top) {
           const target = isDark(qr, x, z) ? shade.dark : shade.light
           scenery.push(mix(shade.side, target, SCENERY_QR_STRENGTH))
@@ -110,6 +116,7 @@ export function colorize(grid: VoxelGrid, qr: QrGrid, palette: Palette): Colored
     positions: Int16Array.from(positions),
     sceneryColors: Uint32Array.from(scenery),
     qrColors: Uint32Array.from(qrColors),
+    motion: Uint8Array.from(motion),
   }
 }
 
