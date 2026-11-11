@@ -56,10 +56,14 @@ export class ScapeRenderer {
   private last = 0
   private readonly reducedMotion = matchMedia('(prefers-reduced-motion: reduce)')
 
-  constructor(private readonly canvas: HTMLCanvasElement) {
+  /** pixelRatio is fixed for offscreen export canvases; on screen it follows the display (max 2). */
+  constructor(
+    private readonly canvas: HTMLCanvasElement,
+    pixelRatio = Math.min(devicePixelRatio, 2),
+  ) {
     // preserveDrawingBuffer so PNG export and screenshots can read the canvas.
     this.renderer = new WebGLRenderer({ canvas, antialias: false, alpha: true, preserveDrawingBuffer: true })
-    this.renderer.setPixelRatio(Math.min(devicePixelRatio, 2))
+    this.renderer.setPixelRatio(pixelRatio)
     this.material.onBeforeCompile = (shader) => {
       Object.assign(shader.uniforms, this.uniforms)
       shader.vertexShader = `attribute float motion;
@@ -146,14 +150,24 @@ ${shader.vertexShader}`.replace(
     this.render()
   }
 
+  /** Draws one exact moment, for GIF export. */
+  renderFrame(azimuth: number, morph: number, time: number): void {
+    this.azimuth = azimuth
+    this.morph = morph
+    this.time = time
+    this.render()
+  }
+
   render(): void {
     const v = this.voxels
     if (!v || !this.mesh) return
     this.resize()
-    const e = this.reducedMotion.matches ? Math.round(this.morph) : ease(this.morph)
+    // Reduce-motion is for the live page; exported files (offscreen canvas) keep the smooth morph and sway.
+    const reduce = this.reducedMotion.matches && this.canvas.isConnected
+    const e = reduce ? Math.round(this.morph) : ease(this.morph)
     // Motion fades out on the way to the QR so the code is perfectly still when scanned.
     this.uniforms.uTime.value = this.time
-    this.uniforms.uSway.value = this.reducedMotion.matches ? 0 : 1 - e
+    this.uniforms.uSway.value = reduce ? 0 : 1 - e
 
     // Any quarter turn of a QR still scans, so snap to the nearest one instead of spinning back to 0.
     const quarter = Math.PI / 2
@@ -168,7 +182,7 @@ ${shader.vertexShader}`.replace(
     this.camera.up.set(-Math.sin(el) * Math.sin(az), cos, -Math.sin(el) * Math.cos(az))
     this.camera.lookAt(0, cy, 0)
 
-    const aspect = this.canvas.clientWidth / Math.max(1, this.canvas.clientHeight)
+    const aspect = this.width() / Math.max(1, this.height())
     const sceneryHalf = v.size * 0.78
     const qrHalf = v.size * 0.5
     const half = sceneryHalf + (qrHalf - sceneryHalf) * e
@@ -187,9 +201,22 @@ ${shader.vertexShader}`.replace(
     this.renderer.render(this.scene, this.camera)
   }
 
+  // An offscreen canvas has no layout size, so it keeps the size it was created with.
+  private width(): number {
+    return this.canvas.isConnected
+      ? this.canvas.clientWidth
+      : this.canvas.width / this.renderer.getPixelRatio()
+  }
+
+  private height(): number {
+    return this.canvas.isConnected
+      ? this.canvas.clientHeight
+      : this.canvas.height / this.renderer.getPixelRatio()
+  }
+
   private resize(): void {
-    const w = this.canvas.clientWidth
-    const h = this.canvas.clientHeight
+    const w = this.width()
+    const h = this.height()
     const ratio = this.renderer.getPixelRatio()
     if (this.canvas.width !== Math.floor(w * ratio) || this.canvas.height !== Math.floor(h * ratio))
       this.renderer.setSize(w, h, false)

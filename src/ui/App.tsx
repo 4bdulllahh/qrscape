@@ -3,6 +3,7 @@ import { PALETTE_IDS } from '../domain/palettes'
 import { SCENES } from '../domain/scenes'
 import { makeWorld } from '../domain/world'
 import { EmbedPanel } from './EmbedPanel'
+import { ExportPanel } from './ExportPanel'
 import { nameOf, t } from './strings'
 import { ThemeToggle } from './ThemeToggle'
 
@@ -120,6 +121,7 @@ export function App() {
             </div>
           </fieldset>
         </div>
+        {result.ok && <ExportPanel world={result.world} link={typed.trim() || EXAMPLE_LINK} />}
         {result.ok && (
           <EmbedPanel
             link={typed.trim() || EXAMPLE_LINK}
