@@ -72,8 +72,10 @@ npm run scan
 
 ## Current state
 
-- **Last done:** M15 release v0.1.0: README in full (logo, badges, hero, scene sheet, phone shot), `docs/releases/v0.1.0.md`, CHANGELOG, roadmap Done, tag `v0.1.0`. The approved plan is finished.
+- **Last done:** v0.1.0 released, pushed and tagged. Checked on the live site: all 15 scenes scan, PNG and GIF
+  decode, the embed works from another origin with the live script, axe clean, CSP and nosniff headers served.
+  README screenshots retaken from the live site. Every script in `scripts/` takes the site URL as an argument.
 - **Next:** Ask the user what comes next (ideas are in `docs/roadmap.md`).
-- **Open questions:** none.
+- **Open questions:** GitHub release for v0.1.0 (user creates it on github.com, gh CLI not installed); real phone scan by the user; what to build next.
 - **Known issues:** missing favicon (404) until M13. Browsers allow about 16 WebGL canvases per page, so more than ~16 embeds on one page will fail.
-- **Not pushed:** all commits (ask before pushing).
+- **Not pushed:** nothing.

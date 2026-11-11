@@ -11,7 +11,8 @@ for (const [name, w, h, scheme] of [
   ['desk-light', 1200, 1100, 'light'],
   ['phone-dark', 390, 1300, 'dark'],
 ]) {
-  const p = await b.newPage({ viewport: { width: w, height: h }, colorScheme: scheme })
+  // bypassCSP: the live site's CSP (rightly) blocks the injected axe script.
+  const p = await b.newPage({ viewport: { width: w, height: h }, colorScheme: scheme, bypassCSP: true })
   const errors = []
   p.on('pageerror', (e) => errors.push(e.message))
   p.on('console', (m) => m.type() === 'error' && errors.push(m.text()))

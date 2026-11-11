@@ -1,6 +1,6 @@
 // Copies the embed code from the site, pastes it into a page on another origin (python http.server on 8765
 // serving <out>/embedsite) and checks the loop: QR first, then scenery, hover shows QR.
-// Usage: npx vite preview; (cd <out>/embedsite && python -m http.server 8765); node scripts/embed-check.mjs <out>
+// Usage: npx vite preview; (cd <out>/embedsite && python -m http.server 8765); node scripts/embed-check.mjs <out> [site-url]
 import { chromium } from 'playwright-core'
 import jsQR from 'jsqr'
 import { writeFileSync } from 'node:fs'
@@ -9,7 +9,7 @@ const b = await chromium.launch({
   executablePath: 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',
 })
 const site = await b.newPage()
-await site.goto('http://localhost:4173')
+await site.goto(process.argv[3] ?? 'http://localhost:4173')
 await site.getByRole('textbox', { name: 'Your link' }).fill('https://abdullahexe.online')
 await site.getByText('Large (400 px)').click()
 const code = await site.locator('pre code').innerText()
