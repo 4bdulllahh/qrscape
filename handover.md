@@ -66,14 +66,14 @@ npm run scan
 | M10 | Scenes: bamboo grove, torii gate, tea house                       | M    | done   |
 | M11 | Scenes: coffee shop, tofu shop, ramen stall                       | M    | done   |
 | M12 | Scenes: lighthouse island, cactus pot                             | S    | done   |
-| M13 | Logo, favicon, social image (web-asset-generator)                 | S    |        |
+| M13 | Logo, favicon, social image (web-asset-generator)                 | S    | done   |
 | M14 | Polish: impeccable, axe, 390 px, real phone scan of all scenes    | M    |        |
 | M15 | Release to Vercel: README, notes, tag                             | S    |        |
 
 ## Current state
 
-- **Last done:** M12 scenes lighthouse island (rocky island, striped tower, lamp room, cottage) and cactus pot (tapered pot, 3-wide stem, 2-3 arms, flower, pebbles). All 15 scenes done. `npm run scan` now picks every scene and decoded all 15 in Edge.
-- **Next:** M13 logo, favicon and social share image (web-asset-generator skill, user installs it). Then M14 polish, M15 release.
+- **Last done:** M13 logo: isometric voxel block with a QR top and a tiny tree, drawn in code by `scripts/make-assets.mjs` (also renders apple-touch-icon, icon-512 and the og-image from a live scene). Favicon, Open Graph and Twitter tags in `index.html`, logo in the header. web-asset-generator was not loaded, so no .ico (modern browsers use the SVG).
+- **Next:** M14 polish: axe accessibility check, layout polish, ask the user to scan a few scenes with a real phone.
 - **Open questions:** none.
 - **Known issues:** missing favicon (404) until M13. Browsers allow about 16 WebGL canvases per page, so more than ~16 embeds on one page will fail.
 - **Not pushed:** all commits (ask before pushing).
