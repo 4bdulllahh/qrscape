@@ -1,3 +1,6 @@
+import { riceterraces } from './riceterraces'
+import { onsen } from './onsen'
+import { waterfall } from './waterfall'
 import { bamboo } from './bamboo'
 import { baobab } from './baobab'
 import { bonsai } from './bonsai'
@@ -42,4 +45,7 @@ export const SCENES: readonly SceneDef[] = [
   palm,
   willow,
   fern,
+  waterfall,
+  onsen,
+  riceterraces,
 ]

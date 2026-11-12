@@ -2,7 +2,7 @@ import { detail } from './scenes/shapes'
 import type { Rng } from './seed'
 import type { Material, Palette, VoxelGrid } from './voxels'
 
-export const CREATURE_KINDS = ['butterfly', 'bird', 'dragonfly', 'petal', 'fish'] as const
+export const CREATURE_KINDS = ['butterfly', 'bird', 'dragonfly', 'petal', 'fish', 'steam'] as const
 export type CreatureKind = (typeof CREATURE_KINDS)[number]
 
 /**
@@ -92,6 +92,23 @@ export function makeCreatures(
           speed: 0.8 + rng.next() * 0.5,
           phase: rng.next() * 100,
           colors: [petal, petal],
+        })
+      }
+    else if (kind === 'steam')
+      // Puffs of steam or mist rising off water and fading into the air.
+      for (let i = Math.min(14, Math.max(4, detail(size, 4))); i > 0; i--) {
+        const at = spot(['water'])
+        if (!at) break
+        const puff = side('snow')
+        out.push({
+          kind,
+          x: at.x,
+          y: at.y + 1,
+          z: at.z,
+          range: 0.4,
+          speed: 0.6 + rng.next() * 0.4,
+          phase: rng.next() * 100,
+          colors: [puff, puff],
         })
       }
     else if (kind === 'fish')

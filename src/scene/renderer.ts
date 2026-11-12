@@ -60,6 +60,10 @@ const PARTS: Record<CreatureKind, Part[]> = {
   ],
   // One flat petal that tumbles as it falls.
   petal: [{ at: [0, 0, 0], size: [0.35, 0.05, 0.28], color: 0, side: 1 }],
+  steam: [
+    { at: [0, 0, 0], size: [0.5, 0.5, 0.5], color: 0, side: 1 },
+    { at: [0.25, 0.3, 0.1], size: [0.35, 0.35, 0.35], color: 1, side: 0 },
+  ],
   fish: [
     { at: [0, 0, 0], size: [0.32, 0.18, 0.75], color: 0, side: 0 },
     { at: [0, 0, -0.5], size: [0.28, 0.12, 0.25], color: 0, side: 0 },
@@ -72,6 +76,7 @@ const FLIGHT: Record<CreatureKind, { flap: number; swing: number; scale: number 
   bird: { flap: 5, swing: 0.6, scale: 2 },
   dragonfly: { flap: 40, swing: 0.3, scale: 1.8 },
   petal: { flap: 3, swing: 1.2, scale: 1.6 },
+  steam: { flap: 1, swing: 0.5, scale: 1.4 },
   fish: { flap: 0, swing: 0, scale: 1.6 },
 }
 
@@ -85,6 +90,15 @@ function flightPoint(c: Creature, time: number): [number, number, number] {
       c.x + Math.sin(time * 1.3 + c.phase) * c.range + fallen * 0.3,
       c.y - fallen,
       c.z + Math.cos(time * 1.1 + c.phase) * c.range,
+    ]
+  }
+  if (c.kind === 'steam') {
+    // Rises 5 voxels, then starts again at the water.
+    const risen = (time * c.speed + c.phase) % 5
+    return [
+      c.x + Math.sin(time + c.phase) * c.range * risen,
+      c.y + risen,
+      c.z + Math.cos(time * 0.8 + c.phase) * c.range * risen,
     ]
   }
   if (c.kind === 'bird' || c.kind === 'fish')
