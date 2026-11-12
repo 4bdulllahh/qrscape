@@ -160,3 +160,21 @@ export function decorate(grid: VoxelGrid, rng: Rng, amount = 1): void {
     else if (top === 'sand' && roll < 0.4) grid.set(x, y + 1, z, 'stone')
   }
 }
+
+/** A stone lantern (toro) standing on (x, y, z): base, post, glowing light box, wide roof. About 7 tall. */
+export function lantern(grid: VoxelGrid, x: number, y: number, z: number): void {
+  box(grid, x - 1, y, z - 1, x + 1, y, z + 1, 'stone')
+  box(grid, x, y + 1, z, x, y + 2, z, 'stone')
+  box(grid, x - 1, y + 3, z - 1, x + 1, y + 3, z + 1, 'stone')
+  box(grid, x - 1, y + 4, z - 1, x + 1, y + 4, z + 1, 'accent')
+  for (const [dx, dz] of [
+    [-1, -1],
+    [1, -1],
+    [-1, 1],
+    [1, 1],
+  ] as const)
+    grid.set(x + dx, y + 4, z + dz, 'stone')
+  box(grid, x - 2, y + 5, z - 2, x + 2, y + 5, z + 2, 'stone')
+  box(grid, x - 1, y + 6, z - 1, x + 1, y + 6, z + 1, 'stone')
+  grid.set(x, y + 7, z, 'stone')
+}
