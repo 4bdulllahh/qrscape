@@ -1,4 +1,5 @@
 import { bamboo } from './bamboo'
+import { baobab } from './baobab'
 import { bonsai } from './bonsai'
 import { cactus } from './cactus'
 import { cherryblossom } from './cherryblossom'
@@ -7,6 +8,8 @@ import { fishbowl } from './fishbowl'
 import { koipond } from './koipond'
 import { lighthouse } from './lighthouse'
 import { mountains } from './mountains'
+import { palm } from './palm'
+import { pine } from './pine'
 import { ramenstall } from './ramenstall'
 import { teahouse } from './teahouse'
 import { tofushop } from './tofushop'
@@ -32,4 +35,7 @@ export const SCENES: readonly SceneDef[] = [
   ramenstall,
   lighthouse,
   cactus,
+  pine,
+  baobab,
+  palm,
 ]
