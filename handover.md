@@ -137,7 +137,7 @@ another origin, axe clean. The user confirmed it works, including on their phone
 
 ## Current state
 
-Plan v0.2.0 (approved 2026-11-12, 22 milestones). Done: M1, M2.
+Plan v0.2.0 (approved 2026-11-12, 22 milestones). Done: M1 to M3.
 
 | #   | Milestone                                                                                              | Size |
 | --- | ------------------------------------------------------------------------------------------------------ | ---- |
@@ -168,5 +168,5 @@ Decisions for this plan: reworked scenes may change already pasted embeds (user 
 Each scene milestone adds its own creatures. New scenes get `group: 'nature' | 'city'` in their `SceneDef`.
 The scene picker is a custom listbox (`src/ui/ScenePicker.tsx`); scripts drive it through `scripts/picker.mjs`.
 
-- **Next:** M3. Layout: on `lg` the page is `h-dvh`, the canvas max width is `min(560px, 100dvh - 15rem)`, sharing panels live in `Tabs.tsx`; export/embed scripts click their tab first.
+- **Next:** M4. Layout: on `lg` the page is `h-dvh`, the canvas max width is `min(560px, 100dvh - 15rem)`, sharing panels live in `Tabs.tsx`; export/embed scripts click their tab first.
 - **Known issues:** more than about 16 embeds on one page fail (browser limit on WebGL canvases). No `.ico` favicon.

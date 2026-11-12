@@ -34,6 +34,8 @@ export const strings = {
   sizeSmall: 'Small ({px} px)',
   sizeMedium: 'Medium ({px} px)',
   sizeLarge: 'Large ({px} px)',
+  sizeCustom: 'Any size',
+  sizeRange: 'From {min} to {max} px wide.',
   copyCode: 'Copy code',
   copied: 'Copied. Paste it into your page.',
   copyFailed: 'Could not copy. Select the code and copy it by hand.',
