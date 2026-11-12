@@ -1,3 +1,4 @@
+import { makeCreatures } from './creatures'
 import { isPaletteId, PALETTE_IDS, PALETTES, type PaletteId } from './palettes'
 import { makeQrGrid, type QrGrid } from './qr'
 import { SCENES } from './scenes'
@@ -34,6 +35,9 @@ export function makeWorld(link: string, options: WorldOptions = {}): WorldResult
   const scene = SCENES.find((s) => s.id === options.scene) ?? seedScene
   const paletteId = isPaletteId(options.palette) ? options.palette : seedPalette
   const grid = scene.build(qr.grid.size, rng)
+  const palette = PALETTES[paletteId]
+  const creatureRng = createRng(seedFor(`${link}#creatures`, options.reroll ?? 0))
+  const creatures = makeCreatures(grid, palette, creatureRng, scene.creatures ?? ['butterfly', 'bird'])
   return {
     ok: true,
     world: {
@@ -41,7 +45,7 @@ export function makeWorld(link: string, options: WorldOptions = {}): WorldResult
       paletteId,
       qr: qr.grid,
       grid,
-      voxels: colorize(grid, qr.grid, PALETTES[paletteId]),
+      voxels: { ...colorize(grid, qr.grid, palette), creatures },
     },
   }
 }

@@ -1,4 +1,5 @@
 import { contrast, luminance, mix } from './color'
+import type { Creature } from './creatures'
 import { isDark, type QrGrid } from './qr'
 
 export const MATERIALS = [
@@ -84,6 +85,8 @@ export interface ColoredVoxels {
   qrColors: Uint32Array
   /** Idle motion per voxel: 0 still, 1 sways (leaves, petals, fish), 2 bobs (water). */
   motion: Uint8Array
+  /** Animated extras for the scenery view only (makeWorld fills them in). */
+  creatures: readonly Creature[]
 }
 
 const MOTION: Partial<Record<Material, number>> = { leaf: 1, petal: 1, fish: 1, water: 2 }
@@ -133,6 +136,7 @@ export function colorize(grid: VoxelGrid, qr: QrGrid, palette: Palette): Colored
     positions: Int16Array.from(positions),
     sceneryColors: Uint32Array.from(scenery),
     qrColors: Uint32Array.from(qrColors),
+    creatures: [],
     motion: Uint8Array.from(motion),
   }
 }

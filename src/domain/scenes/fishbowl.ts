@@ -6,6 +6,7 @@ import type { SceneDef } from './types'
 export const fishbowl: SceneDef = {
   group: 'nature',
   id: 'fishbowl',
+  creatures: ['butterfly'],
   build(size, rng) {
     const grid = new VoxelGrid(size, size)
     slab(grid, 0, 0, 'wood')

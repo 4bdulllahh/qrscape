@@ -6,6 +6,7 @@ import type { SceneDef } from './types'
 export const mountains: SceneDef = {
   group: 'nature',
   id: 'mountains',
+  creatures: ['bird', 'butterfly'],
   build(size, rng) {
     const grid = new VoxelGrid(size, size)
     const peaks = Array.from({ length: rng.int(2, 3) }, () => ({

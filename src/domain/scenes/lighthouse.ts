@@ -6,6 +6,7 @@ import type { SceneDef } from './types'
 export const lighthouse: SceneDef = {
   group: 'nature',
   id: 'lighthouse',
+  creatures: ['bird'],
   build(size, rng) {
     const grid = new VoxelGrid(size, size)
     slab(grid, 0, 0, 'water')

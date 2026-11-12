@@ -137,7 +137,7 @@ another origin, axe clean. The user confirmed it works, including on their phone
 
 ## Current state
 
-Plan v0.2.0 (approved 2026-11-12, 22 milestones). Done: M1 to M4.
+Plan v0.2.0 (approved 2026-11-12, 22 milestones). Done: M1 to M5.
 
 | #   | Milestone                                                                                              | Size |
 | --- | ------------------------------------------------------------------------------------------------------ | ---- |
@@ -168,5 +168,5 @@ Decisions for this plan: reworked scenes may change already pasted embeds (user 
 Each scene milestone adds its own creatures. New scenes get `group: 'nature' | 'city'` in their `SceneDef`.
 The scene picker is a custom listbox (`src/ui/ScenePicker.tsx`); scripts drive it through `scripts/picker.mjs`.
 
-- **Next:** M5. Details: `detail(size, base)` and `decorate(grid, rng)` in `scenes/shapes.ts`; use them for any count in new or reworked scenes. Layout: on `lg` the page is `h-dvh`, the canvas max width is `min(560px, 100dvh - 15rem)`, sharing panels live in `Tabs.tsx`; export/embed scripts click their tab first.
+- **Next:** M6. Creatures: `src/domain/creatures.ts` places them (own rng, so scenes are unchanged), `SceneDef.creatures` picks kinds, they ride along in `ColoredVoxels.creatures`, and `renderer.ts` draws them (PARTS, FLIGHT) and fades them out early in the morph. Because they travel with the voxels, the GIF already shows them; M6 checks the GIF and embed.
 - **Known issues:** more than about 16 embeds on one page fail (browser limit on WebGL canvases). No `.ico` favicon.

@@ -6,6 +6,7 @@ import type { SceneDef } from './types'
 export const koipond: SceneDef = {
   group: 'nature',
   id: 'koipond',
+  creatures: ['dragonfly', 'butterfly', 'bird'],
   build(size, rng) {
     const grid = new VoxelGrid(size, size)
     slab(grid, 0, 1, 'soil')

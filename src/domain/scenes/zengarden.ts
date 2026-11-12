@@ -6,6 +6,7 @@ import type { SceneDef } from './types'
 export const zengarden: SceneDef = {
   group: 'nature',
   id: 'zengarden',
+  creatures: ['butterfly', 'dragonfly'],
   build(size, rng) {
     const grid = new VoxelGrid(size, size)
     slab(grid, 0, 0, 'sand')
