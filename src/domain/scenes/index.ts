@@ -4,6 +4,7 @@ import { bonsai } from './bonsai'
 import { cactus } from './cactus'
 import { cherryblossom } from './cherryblossom'
 import { coffeeshop } from './coffeeshop'
+import { fern } from './fern'
 import { fishbowl } from './fishbowl'
 import { koipond } from './koipond'
 import { lighthouse } from './lighthouse'
@@ -16,6 +17,7 @@ import { tofushop } from './tofushop'
 import { torii } from './torii'
 import { tree } from './tree'
 import type { SceneDef } from './types'
+import { willow } from './willow'
 export { SCENE_GROUPS, type SceneGroup } from './types'
 import { zengarden } from './zengarden'
 
@@ -38,4 +40,6 @@ export const SCENES: readonly SceneDef[] = [
   pine,
   baobab,
   palm,
+  willow,
+  fern,
 ]

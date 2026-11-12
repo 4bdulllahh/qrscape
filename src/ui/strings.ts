@@ -64,6 +64,8 @@ export const strings = {
   scene_pine: 'Pine',
   scene_baobab: 'Baobab',
   scene_palm: 'Palm island',
+  scene_willow: 'Weeping willow',
+  scene_fern: 'Tree fern',
   palette_day: 'Day',
   palette_blossom: 'Blossom',
   palette_autumn: 'Autumn',
