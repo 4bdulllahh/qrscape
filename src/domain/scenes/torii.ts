@@ -4,6 +4,7 @@ import type { SceneDef } from './types'
 
 /** A red torii gate standing in calm water, a sandy shore with stone lanterns behind it. */
 export const torii: SceneDef = {
+  group: 'city',
   id: 'torii',
   build(size, rng) {
     const grid = new VoxelGrid(size, size)

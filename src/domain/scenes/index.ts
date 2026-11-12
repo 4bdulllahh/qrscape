@@ -13,6 +13,7 @@ import { tofushop } from './tofushop'
 import { torii } from './torii'
 import { tree } from './tree'
 import type { SceneDef } from './types'
+export { SCENE_GROUPS, type SceneGroup } from './types'
 import { zengarden } from './zengarden'
 
 export const SCENES: readonly SceneDef[] = [

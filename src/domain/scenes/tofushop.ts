@@ -4,6 +4,7 @@ import type { SceneDef } from './types'
 
 /** An old wooden tofu shop: gable roof, noren curtain, a red lantern, a water tub and crates of tofu. */
 export const tofushop: SceneDef = {
+  group: 'city',
   id: 'tofushop',
   build(size, rng) {
     const grid = new VoxelGrid(size, size)

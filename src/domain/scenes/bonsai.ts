@@ -4,6 +4,7 @@ import type { SceneDef } from './types'
 
 /** A twisted little tree with flat leaf pads in a wide ceramic pot on a wooden table. */
 export const bonsai: SceneDef = {
+  group: 'nature',
   id: 'bonsai',
   build(size, rng) {
     const grid = new VoxelGrid(size, size)

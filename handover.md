@@ -137,8 +137,36 @@ another origin, axe clean. The user confirmed it works, including on their phone
 
 ## Current state
 
-- **Last done:** v0.1.0 live, pushed and tagged; handover rewritten as a full guide.
-- **Next:** ask the user what to build. Candidates are in `docs/roadmap.md` (click embed to open link, iframe embed, more scenes, Arabic).
-- **Open questions:** whether the user made the GitHub release for `v0.1.0` (notes in `docs/releases/v0.1.0.md`).
+Plan v0.2.0 (approved 2026-11-12, 22 milestones). Done: M1.
+
+| #   | Milestone                                                                                              | Size |
+| --- | ------------------------------------------------------------------------------------------------------ | ---- |
+| 1   | Light theme by default, scene picker with search and Nature / City groups (fixes the arrow)            | M    |
+| 2   | Laptops and PCs fit one screen: tabs on the right (Make it, Download, Website code); phones scroll     | M    |
+| 3   | Embed size presets plus a custom px box (80 to 1200), code box scrolls inside                          | S    |
+| 4   | Details grow with QR size (longer link = more details), applied to every scene                         | M    |
+| 5   | Creatures part 1: animated voxel creatures on the site, fade out on hover / QR, still on reduce-motion | M    |
+| 6   | Creatures part 2: creatures in the GIF and embed, hidden in QR frames                                  | S    |
+| 7   | Tree bushier and bigger (look at tree.icqr in Edge first; WebFetch gets nothing, it is all JS)         | M    |
+| 8   | Bonsai: pine, maple, juniper, azalea, shallow pot, moss                                                | M    |
+| 9   | Cherry blossom chunkier, fish bowl water nicer, creatures for both                                     | M    |
+| 10  | Zen garden better, koi pond natural shape + nicer bridge                                               | M    |
+| 11  | Bamboo denser on big QR + panda, more detail for torii and mountains                                   | M    |
+| 12  | Tea house with outdoor furniture, coffee shop more than a block                                        | M    |
+| 13  | Tofu shop and ramen stall details                                                                      | M    |
+| 14  | Lighthouse fixed on big QR, cactus kinds on big QR (bonsai cactus etc.)                                | M    |
+| 15  | New tree scenes: pine, baobab, palm                                                                    | M    |
+| 16  | New tree scenes: willow, fern                                                                          | S    |
+| 17  | Waterfall, onsen, rice terraces                                                                        | M    |
+| 18  | Mount Fuji, lily pond                                                                                  | M    |
+| 19  | Kyoto pagoda, lantern street                                                                           | M    |
+| 20  | Chongqing hillside                                                                                     | M    |
+| 21  | Venice canal, Santorini                                                                                | M    |
+| 22  | Release v0.2.0                                                                                         | M    |
+
+Decisions for this plan: reworked scenes may change already pasted embeds (user accepted, v0.1.0 was one day old).
+Each scene milestone adds its own creatures. New scenes get `group: 'nature' | 'city'` in their `SceneDef`.
+The scene picker is a custom listbox (`src/ui/ScenePicker.tsx`); scripts drive it through `scripts/picker.mjs`.
+
+- **Next:** M2.
 - **Known issues:** more than about 16 embeds on one page fail (browser limit on WebGL canvases). No `.ico` favicon.
-- **Not pushed:** see `git status`.

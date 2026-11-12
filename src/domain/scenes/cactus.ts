@@ -4,6 +4,7 @@ import type { SceneDef } from './types'
 
 /** A chunky cactus with 2 or 3 seeded arms and a flower, in a terracotta pot on a table with pebbles. */
 export const cactus: SceneDef = {
+  group: 'nature',
   id: 'cactus',
   build(size, rng) {
     const grid = new VoxelGrid(size, size)

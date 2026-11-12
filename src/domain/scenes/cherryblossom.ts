@@ -4,6 +4,7 @@ import type { SceneDef } from './types'
 
 /** A wide pink blossom tree over a lawn with fallen petals and a wooden bench. */
 export const cherryblossom: SceneDef = {
+  group: 'nature',
   id: 'cherryblossom',
   build(size, rng) {
     const grid = new VoxelGrid(size, size)

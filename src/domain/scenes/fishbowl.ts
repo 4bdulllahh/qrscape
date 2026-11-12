@@ -4,6 +4,7 @@ import type { SceneDef } from './types'
 
 /** A round glass bowl on a table: gravel, a water plant and seeded fish swimming at the surface. */
 export const fishbowl: SceneDef = {
+  group: 'nature',
   id: 'fishbowl',
   build(size, rng) {
     const grid = new VoxelGrid(size, size)

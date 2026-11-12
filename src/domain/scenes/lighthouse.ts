@@ -4,6 +4,7 @@ import type { SceneDef } from './types'
 
 /** A small rocky island in the sea with a striped lighthouse and a keeper's cottage. */
 export const lighthouse: SceneDef = {
+  group: 'nature',
   id: 'lighthouse',
   build(size, rng) {
     const grid = new VoxelGrid(size, size)

@@ -4,6 +4,7 @@ import type { SceneDef } from './types'
 
 /** A grassy island with one seeded tree: lean, branch count, canopy size and stones all come from the seed. */
 export const tree: SceneDef = {
+  group: 'nature',
   id: 'tree',
   build(size, rng) {
     const grid = new VoxelGrid(size, size)

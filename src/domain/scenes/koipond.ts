@@ -4,6 +4,7 @@ import type { SceneDef } from './types'
 
 /** A sunken pond with a stone edge, lily pads, koi and a small wooden bridge. */
 export const koipond: SceneDef = {
+  group: 'nature',
   id: 'koipond',
   build(size, rng) {
     const grid = new VoxelGrid(size, size)

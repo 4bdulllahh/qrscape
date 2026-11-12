@@ -4,6 +4,7 @@ import type { SceneDef } from './types'
 
 /** A ramen cart on wheels: canopy roof, noren, red lanterns, stools and a steaming bowl. */
 export const ramenstall: SceneDef = {
+  group: 'city',
   id: 'ramenstall',
   build(size, rng) {
     const grid = new VoxelGrid(size, size)

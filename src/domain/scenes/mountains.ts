@@ -4,6 +4,7 @@ import type { SceneDef } from './types'
 
 /** Seeded peaks with snow caps, rocky slopes, a lake in the lowest spot and a few pines. */
 export const mountains: SceneDef = {
+  group: 'nature',
   id: 'mountains',
   build(size, rng) {
     const grid = new VoxelGrid(size, size)

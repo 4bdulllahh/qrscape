@@ -4,6 +4,7 @@ import type { SceneDef } from './types'
 
 /** A little corner café: big window, striped awning, tables with cups outside, plants by the door. */
 export const coffeeshop: SceneDef = {
+  group: 'city',
   id: 'coffeeshop',
   build(size, rng) {
     const grid = new VoxelGrid(size, size)

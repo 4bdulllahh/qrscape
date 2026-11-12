@@ -2,6 +2,7 @@
 // Usage: npm run build && npx vite preview, then: node scripts/scan-check.mjs [url] [screenshot-dir]
 import { chromium } from 'playwright-core'
 import jsQR from 'jsqr'
+import { pickScene, sceneList } from './picker.mjs'
 
 const url = process.argv[2] ?? 'http://localhost:4173'
 const shots = process.argv[3]
@@ -16,13 +17,12 @@ const browser = await chromium.launch({ executablePath: edge })
 const page = await browser.newPage({ viewport: { width: 1200, height: 900 } })
 await page.goto(url)
 let failed = 0
-const select = page.getByRole('combobox', { name: 'Scene' })
-const scenes = (await select.locator('option').evaluateAll((o) => o.map((x) => x.value))).filter(Boolean)
+const scenes = (await sceneList(page)).map(([id]) => id)
 // Every scene once, cycling through the test links.
 for (const [i, scene] of scenes.entries()) {
   const link = links[i % links.length]
   await page.getByRole('textbox', { name: 'Your link' }).fill(link)
-  await select.selectOption(scene)
+  await pickScene(page, scene)
   const canvas = page.locator('canvas')
   await page.waitForTimeout(1300)
   if (shots) await canvas.screenshot({ path: `${shots}/scenery-${scene}.png` })

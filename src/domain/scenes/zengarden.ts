@@ -4,6 +4,7 @@ import type { SceneDef } from './types'
 
 /** Raked sand with ripples around mossy rocks, inside a low wooden border. */
 export const zengarden: SceneDef = {
+  group: 'nature',
   id: 'zengarden',
   build(size, rng) {
     const grid = new VoxelGrid(size, size)

@@ -1,6 +1,7 @@
 // Screenshots every scene (picked from the Scene list) and tiles them into one contact sheet, scene-sheet.png.
 // Usage: with `npx vite preview` running: node scripts/scene-sheet.mjs [out-dir] [link] [url]
 import { chromium } from 'playwright-core'
+import { pickScene, sceneList } from './picker.mjs'
 
 const out = process.argv[2] ?? '.'
 const link = process.argv[3] ?? 'https://abdullahexe.online'
@@ -13,13 +14,10 @@ const errors = []
 p.on('pageerror', (e) => errors.push(e.message))
 await p.goto(url)
 await p.getByRole('textbox', { name: 'Your link' }).fill(link)
-const select = p.getByRole('combobox', { name: 'Scene' })
-const scenes = (
-  await select.locator('option').evaluateAll((o) => o.map((x) => [x.value, x.textContent]))
-).filter(([v]) => v)
+const scenes = await sceneList(p)
 const shots = []
 for (const [id, name] of scenes) {
-  await select.selectOption(id)
+  await pickScene(p, id)
   await p.waitForTimeout(1200)
   shots.push([name, (await p.locator('canvas').screenshot()).toString('base64')])
 }

@@ -4,6 +4,7 @@ import type { SceneDef } from './types'
 
 /** A small raised tea house: paper walls in a wooden frame, a stepped tiled roof and a stone path. */
 export const teahouse: SceneDef = {
+  group: 'city',
   id: 'teahouse',
   build(size, rng) {
     const grid = new VoxelGrid(size, size)

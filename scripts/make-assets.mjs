@@ -3,6 +3,7 @@
 // Usage: with `npx vite preview` running (for the scene in the share image): node scripts/make-assets.mjs [url]
 import { chromium } from 'playwright-core'
 import { writeFileSync } from 'node:fs'
+import { pickScene } from './picker.mjs'
 
 const url = process.argv[2] ?? 'http://localhost:4173'
 const N = 5
@@ -77,7 +78,7 @@ await png('public/icon-512.png', 512, 512, icon(512, '#f7efe1'))
 const site = await b.newPage({ viewport: { width: 900, height: 1100 } })
 await site.goto(url)
 await site.getByRole('textbox', { name: 'Your link' }).fill('https://qrscape-ten.vercel.app')
-await site.getByRole('combobox', { name: 'Scene' }).selectOption('cherryblossom')
+await pickScene(site, 'cherryblossom')
 await site.getByText('Day', { exact: true }).click()
 await site.waitForTimeout(1500)
 const scene = (await site.locator('canvas').screenshot({ omitBackground: true })).toString('base64')

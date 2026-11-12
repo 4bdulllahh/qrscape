@@ -1,9 +1,9 @@
 import { lazy, Suspense, useDeferredValue, useMemo, useState } from 'react'
 import { PALETTE_IDS } from '../domain/palettes'
-import { SCENES } from '../domain/scenes'
 import { makeWorld } from '../domain/world'
 import { EmbedPanel } from './EmbedPanel'
 import { ExportPanel } from './ExportPanel'
+import { ScenePicker } from './ScenePicker'
 import { nameOf, t } from './strings'
 import { ThemeToggle } from './ThemeToggle'
 
@@ -58,23 +58,11 @@ export function App() {
             />
           </label>
           <div className="flex w-full flex-col gap-4">
-            <label className="flex flex-col gap-2">
-              <span className="text-sm font-medium">{t('scenePicker')}</span>
-              <select
-                value={scene}
-                onChange={(e) => setScene(e.target.value)}
-                className="border-line bg-canvas text-fg focus-visible:outline-accent rounded-full border px-4 py-2 focus-visible:outline-2"
-              >
-                <option value="">
-                  {t('auto', { name: auto.ok ? nameOf('scene', auto.world.sceneId) : '' })}
-                </option>
-                {SCENES.map((s) => (
-                  <option key={s.id} value={s.id}>
-                    {nameOf('scene', s.id)}
-                  </option>
-                ))}
-              </select>
-            </label>
+            <ScenePicker
+              value={scene}
+              autoLabel={t('auto', { name: auto.ok ? nameOf('scene', auto.world.sceneId) : '' })}
+              onChange={setScene}
+            />
             <fieldset className="flex flex-col gap-2">
               <legend className="mb-2 text-sm font-medium">{t('moodPicker')}</legend>
               <div className="flex flex-wrap gap-2">

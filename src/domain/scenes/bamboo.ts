@@ -4,6 +4,7 @@ import type { SceneDef } from './types'
 
 /** Tall swaying bamboo in clumps, with a stepping-stone path winding through. */
 export const bamboo: SceneDef = {
+  group: 'nature',
   id: 'bamboo',
   build(size, rng) {
     const grid = new VoxelGrid(size, size)
