@@ -1,3 +1,5 @@
+import { santorini } from './santorini'
+import { venice } from './venice'
 import { chongqing } from './chongqing'
 import { lanternstreet } from './lanternstreet'
 import { pagoda } from './pagoda'
@@ -58,4 +60,6 @@ export const SCENES: readonly SceneDef[] = [
   pagoda,
   lanternstreet,
   chongqing,
+  venice,
+  santorini,
 ]

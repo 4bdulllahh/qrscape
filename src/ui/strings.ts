@@ -74,6 +74,8 @@ export const strings = {
   scene_pagoda: 'Kyoto pagoda',
   scene_lanternstreet: 'Lantern street',
   scene_chongqing: 'Chongqing hillside',
+  scene_venice: 'Venice canal',
+  scene_santorini: 'Santorini',
   palette_day: 'Day',
   palette_blossom: 'Blossom',
   palette_autumn: 'Autumn',
