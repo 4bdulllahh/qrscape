@@ -27,6 +27,9 @@ export function gifTimeline(fps = GIF_FPS): Frame[] {
   add(Math.round(ORBIT_SECONDS * fps), (t) => ({ azimuth: -SWING + 2 * SWING * t, morph: 0 }))
   add(morphFrames, (t) => ({ azimuth: SWING, morph: t }))
   add(Math.round(HOLD_SECONDS * fps), () => ({ azimuth: SWING, morph: 1 }))
+  // Sway and creatures are hidden during the hold, so the clock jumps back there: the morph back then
+  // ends exactly one step before time 0 and the loop has no visible jump.
+  time -= (frames.length + morphFrames) / fps
   add(morphFrames, (t) => ({ azimuth: -SWING, morph: 1 - t }))
   return frames
 }

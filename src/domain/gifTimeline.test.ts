@@ -17,6 +17,8 @@ describe('gifTimeline', () => {
     expect(first?.morph).toBe(0)
     expect(last?.morph).toBeLessThan(0.1)
     expect(last?.azimuth).toBe(first?.azimuth)
+    expect(last?.time).toBeCloseTo(-1 / GIF_FPS)
+    expect(first?.time).toBe(0)
   })
   it('snaps both orbit ends to the same quarter turn', () => {
     const quarter = Math.PI / 2
