@@ -71,6 +71,8 @@ export const strings = {
   scene_riceterraces: 'Rice terraces',
   scene_fuji: 'Mount Fuji',
   scene_lilypond: 'Lily pond',
+  scene_pagoda: 'Kyoto pagoda',
+  scene_lanternstreet: 'Lantern street',
   palette_day: 'Day',
   palette_blossom: 'Blossom',
   palette_autumn: 'Autumn',
