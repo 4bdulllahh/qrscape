@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.2.0 (2026-11-12)
+
+- 15 new scenes (30 in all): pine, baobab, palm island, weeping willow, tree fern, waterfall, hot spring, rice terraces, Mount Fuji, lily pond, Kyoto pagoda, lantern street, Chongqing hillside, Venice canal, Santorini.
+- Every first-release scene reworked with more detail. Already pasted embeds of those scenes look different.
+- Animated creatures (butterflies, birds, dragonflies, petals, fish, steam) on the site, GIF and embed, hidden in QR frames.
+- Details grow with the QR size, so longer links get fuller worlds.
+- Scene picker with search and Nature / City groups.
+- Tabs (Make it, Download, Website code); the page fits one laptop screen.
+- Embed size presets plus any size from 80 to 1200 px.
+- Light theme by default.
+
 ## 0.1.0 (2026-11-11)
 
 First release.

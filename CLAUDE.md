@@ -4,7 +4,7 @@ A free website that turns any link into a QR code drawn as a calm 8-bit (voxel) 
 bonsai, mountains, fish bowls, coffee shops and more. Seen from a corner it is a little world; seen straight
 from above it is a scannable QR code. People share it as a GIF or PNG (email) or paste an embed code into
 their own website. Inspired by tree.icqr.com (one tree only). Vite + React + plain three.js, no backend,
-no accounts. Portfolio piece, v0.1.0 live at https://qrscape-ten.vercel.app.
+no accounts. Portfolio piece, v0.2.0 live at https://qrscape-ten.vercel.app.
 
 **Read [handover.md](handover.md) before changing anything.** It has the code map, recipes (add a scene, material,
 mood, release), the browser check scripts and where the work stopped.
@@ -19,7 +19,7 @@ mood, release), the browser check scripts and where the work stopped.
 | Themes    | Light + dark (`.dark` class on `<html>`, tokens in `src/index.css`, typencut's sand/navy look)    |
 | Design    | Zen and calm like typencut. taste-skill for art direction, impeccable for the polish pass         |
 | Shipping  | Vercel (static). The embed script is served from the same site                                    |
-| Version   | 0.1.0, stored in `package.json`                                                                   |
+| Version   | 0.2.0, stored in `package.json`                                                                   |
 | Skills    | ponytail, i-have-adhd, model-router, taste-skill, web-asset-generator, impeccable                 |
 | Repo      | https://github.com/4bdulllahh/qrscape                                                             |
 

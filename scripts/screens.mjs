@@ -8,7 +8,7 @@ const b = await chromium.launch({
   executablePath: 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',
 })
 for (const [name, w, h, scheme] of [
-  ['desk-light', 1200, 1100, 'light'],
+  ['desk-light', 1280, 800, 'light'],
   ['phone-dark', 390, 1300, 'dark'],
 ]) {
   // bypassCSP: the live site's CSP (rightly) blocks the injected axe script.
@@ -27,10 +27,10 @@ for (const [name, w, h, scheme] of [
   )
   console.log(name, 'axe', axe)
   await p.screenshot({ path: `${out}/${name}.png`, fullPage: true })
-  // README hero: the top of the page only (the embed code below shows the local server address).
+  // README hero: one laptop screen (the page fits without scrolling; the embed code is in its own tab).
   await p.screenshot({
     path: `${out}/${name}-hero.png`,
-    clip: { x: 0, y: 0, width: w, height: Math.min(h, 780) },
+    clip: { x: 0, y: 0, width: w, height: h },
   })
   console.log(name, 'scrollWidth', sw, 'errors', errors)
 }

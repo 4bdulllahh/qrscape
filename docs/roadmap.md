@@ -4,7 +4,6 @@
 
 | Item                                         | Why                                       | Size |
 | -------------------------------------------- | ----------------------------------------- | ---- |
-| More scenes after the first 15               | Variety keeps people sharing              | M    |
 | More languages (Arabic first, right to left) | Wider audience; strings already use `t()` | M    |
 
 ## Ideas (not decided)
@@ -22,3 +21,7 @@
 | GIF and PNG downloads                                   | v0.1.0  |
 | Website embed code with the scenery and QR loop         | v0.1.0  |
 | Light and dark themes, logo, icons, share image         | v0.1.0  |
+| 15 more scenes (30 in all), every first scene reworked  | v0.2.0  |
+| Animated creatures that hide for the QR code            | v0.2.0  |
+| Scene search with Nature / City groups, tabs layout     | v0.2.0  |
+| Any embed size, details that grow with the link         | v0.2.0  |

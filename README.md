@@ -4,35 +4,40 @@
 
 <p align="center"><b>Turn any link into a tiny 8-bit world that is also a QR code.</b></p>
 
-Paste a link and QRscape grows a calm voxel world from it: a tree, a bonsai, a koi pond, a ramen stall and 11 more.
+Paste a link and QRscape grows a calm voxel world from it: a willow, a bonsai, a koi pond, a Venice canal and 26 more.
 Look at it from the side and it is a little world. Look straight down and it is a QR code you can scan. Every
 link grows its own world, like a seed in Minecraft. Send it as a GIF, or paste one line of code into your website.
 Free and private: it runs entirely in your browser. No account, no server, nothing stored.
 
-**Live:** https://qrscape-ten.vercel.app · **Version:** 0.1.0
+**Live:** https://qrscape-ten.vercel.app · **Version:** 0.2.0
 
 [![CI](https://github.com/4bdulllahh/qrscape/actions/workflows/ci.yml/badge.svg)](https://github.com/4bdulllahh/qrscape/actions/workflows/ci.yml)
 [![Live site](https://img.shields.io/badge/live-qrscape--ten.vercel.app-5a9a48.svg)](https://qrscape-ten.vercel.app)
 [![License: MIT](https://img.shields.io/badge/license-MIT-5a9a48.svg)](LICENSE)
 
-<p align="center"><img src="docs/screenshots/hero.png" alt="QRscape on a laptop: an autumn tree world on the left, the link box, scene and mood choices and download buttons on the right" width="860" /></p>
+<p align="center"><img src="docs/screenshots/hero.png" alt="QRscape on a laptop: an autumn bonsai world on the left, the link box, scene and mood choices and download buttons on the right" width="860" /></p>
 
 > The links in these screenshots are examples.
 
 ## Features
 
 - **Every link grows its own world.** The link is turned into a number (a seed) that picks the scene, the mood and every detail: branch shapes, peak heights, where the fish swim. The same link always grows the same world.
-- **15 calm scenes.** Tree, bonsai, mountains, fish bowl, zen garden, cherry blossom, koi pond, bamboo grove, torii gate, tea house, coffee shop, tofu shop, ramen stall, lighthouse island and cactus pot.
+- **30 calm scenes, easy to find.** Search the list or browse two groups.
+  - **Nature:** tree, bonsai, mountains, fish bowl, zen garden, cherry blossom, koi pond, bamboo grove, lighthouse island, cactus pot, pine, baobab, palm island, weeping willow, tree fern, waterfall, hot spring, rice terraces, Mount Fuji and lily pond.
+  - **City:** torii gate, tea house, coffee shop, tofu shop, ramen stall, Kyoto pagoda, lantern street, Chongqing hillside, Venice canal and Santorini.
+- **Longer links, more detail.** A longer link makes a bigger QR code, and the world fills it with more trees, houses and boats.
+- **Little creatures.** Butterflies, birds, dragonflies, petals, fish and steam move through the world, then fade out before the QR code appears.
 - **5 moods.** Day, Blossom, Autumn, Dusk and Night. Let the link choose, or pick your own.
 - **Grow another one.** Not your favourite? Grow a new world from the same link.
 - **A QR code hiding in plain sight.** Hover over the world and it turns smoothly into a flat QR code. Every scene in every mood is checked to scan.
 - **For email and chat.** Download a looping GIF (the world, then the QR code) or a flat PNG of the QR code in the world's colours.
-- **For your website.** Copy one short piece of code, in small, medium or large. On your page the world shows for 5 seconds, then the QR code for 2.5 seconds, and hovering shows the QR code.
-- **Light and dark.** A calm sand and navy look that follows your system.
+- **For your website.** Copy one short piece of code, in small, medium, large or any size from 80 to 1200 pixels. On your page the world shows for 5 seconds, then the QR code for 2.5 seconds, and hovering shows the QR code.
+- **One screen on laptops.** Three tabs (Make it, Download, Website code) keep everything in view.
+- **Light and dark.** A calm sand look by default, with a Dark button for navy.
 
-| All 15 scenes (Night mood)                                      | On a phone                                                          |
-| --------------------------------------------------------------- | ------------------------------------------------------------------- |
-| ![All 15 scenes in the Night mood](docs/screenshots/scenes.png) | ![QRscape on a phone in dark mode](docs/screenshots/phone-dark.png) |
+| All 30 scenes                                 | On a phone                                                          |
+| --------------------------------------------- | ------------------------------------------------------------------- |
+| ![All 30 scenes](docs/screenshots/scenes.png) | ![QRscape on a phone in dark mode](docs/screenshots/phone-dark.png) |
 
 ## Getting started
 
