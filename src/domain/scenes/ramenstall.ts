@@ -1,8 +1,8 @@
 import { VoxelGrid } from '../voxels'
-import { box, decorate, slab } from './shapes'
+import { blob, box, cylinder, decorate, slab } from './shapes'
 import type { SceneDef } from './types'
 
-/** A ramen cart on wheels: canopy roof, noren, red lanterns, stools and a steaming bowl. */
+/** A ramen cart on wheels: canopy, noren, a string of lanterns, broth pot, steaming bowl, cushioned stools, menu board and a shared table. */
 export const ramenstall: SceneDef = {
   group: 'city',
   id: 'ramenstall',
@@ -46,10 +46,32 @@ export const ramenstall: SceneDef = {
     box(grid, bx - 1, counter + 1, z1 + 1, bx + 1, counter + 1, z1 + 1, 'pot')
     for (let y = counter + 3; y < roof - 4; y += 2) grid.set(bx + rng.int(-1, 1), y, z1 + 1, 'snow')
 
-    // Stools in front of the counter.
+    // Stools with red cushions in front of the counter.
     for (let x = x0 + 1; x <= x1 - 1; x += 4) {
       box(grid, x, 1, z1 + 5, x, 3, z1 + 5, 'wood')
-      box(grid, x - 1, 4, z1 + 4, x + 1, 4, z1 + 6, 'wood')
+      box(grid, x - 1, 4, z1 + 4, x + 1, 4, z1 + 6, 'accent')
+    }
+
+    // A string of paper lanterns along the canopy edge, a big lantern on the side, a pot of broth,
+    // stacked bowls, a menu board, supply crates and, on bigger QRs, a shared table with benches.
+    for (let x = x0 - 1; x <= x1 + 1; x += 3) blob(grid, [x, roof - 2, z1 + 4], 0.9, 'accent', 1, 0)
+    blob(grid, [x1 + 3, counter + 3, (z0 + z1) / 2], 1.6, 'accent', 1.2, 0)
+    box(grid, x1 + 3, counter + 5, Math.round((z0 + z1) / 2), x1 + 3, roof, Math.round((z0 + z1) / 2), 'wood')
+    cylinder(grid, x0 + 2, z1, counter + 1, counter + 2, 1.5, 'stone')
+    grid.set(x0 + 2, counter + 2, z1, 'fish')
+    box(grid, x1 - 1, counter + 1, z1 + 1, x1 - 1, counter + 3, z1 + 1, 'pot')
+    box(grid, x0 - 3, 1, z0, x0 - 3, roof - 3, z0 + 3, 'wood')
+    for (let y = 3; y < roof - 3; y += 2) box(grid, x0 - 4, y, z0 + 1, x0 - 4, y, z0 + 2, 'snow')
+    box(grid, x1 + 2, 1, z0 - 3, x1 + 4, 2, z0 - 1, 'wood')
+    box(grid, x1 + 3, 3, z0 - 2, x1 + 4, 3, z0 - 1, 'wood')
+    if (size >= 33) {
+      const tz = Math.min(size - 4, z1 + 10)
+      box(grid, c - 4, 1, tz, c - 4, 2, tz, 'wood')
+      box(grid, c + 4, 1, tz, c + 4, 2, tz, 'wood')
+      box(grid, c - 5, 3, tz - 1, c + 5, 3, tz + 1, 'wood')
+      box(grid, c - 5, 1, tz - 3, c + 5, 2, tz - 3, 'wood')
+      box(grid, c - 5, 1, tz + 3, c + 5, 2, tz + 3, 'wood')
+      for (let x = c - 3; x <= c + 3; x += 3) grid.set(x, 4, tz, 'pot')
     }
     decorate(grid, rng)
     return grid
