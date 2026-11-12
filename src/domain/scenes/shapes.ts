@@ -178,3 +178,18 @@ export function lantern(grid: VoxelGrid, x: number, y: number, z: number): void 
   box(grid, x - 1, y + 6, z - 1, x + 1, y + 6, z + 1, 'stone')
   grid.set(x, y + 7, z, 'stone')
 }
+
+/** A garden parasol: pole from y up `h`, then a shallow round canopy of radius r. */
+export function parasol(
+  grid: VoxelGrid,
+  x: number,
+  y: number,
+  z: number,
+  h: number,
+  r: number,
+  material: Material,
+): void {
+  box(grid, x, y, z, x, y + h - 1, z, 'wood')
+  cylinder(grid, x, z, y + h, y + h, r, material)
+  cylinder(grid, x, z, y + h + 1, y + h + 1, Math.max(1, r - 1.5), material)
+}
