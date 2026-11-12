@@ -73,6 +73,7 @@ export const strings = {
   scene_lilypond: 'Lily pond',
   scene_pagoda: 'Kyoto pagoda',
   scene_lanternstreet: 'Lantern street',
+  scene_chongqing: 'Chongqing hillside',
   palette_day: 'Day',
   palette_blossom: 'Blossom',
   palette_autumn: 'Autumn',

@@ -1,3 +1,4 @@
+import { chongqing } from './chongqing'
 import { lanternstreet } from './lanternstreet'
 import { pagoda } from './pagoda'
 import { lilypond } from './lilypond'
@@ -56,4 +57,5 @@ export const SCENES: readonly SceneDef[] = [
   lilypond,
   pagoda,
   lanternstreet,
+  chongqing,
 ]
