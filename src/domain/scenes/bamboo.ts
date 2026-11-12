@@ -1,8 +1,8 @@
-import { VoxelGrid } from '../voxels'
-import { blob, decorate, detail, slab } from './shapes'
+import { type Material, VoxelGrid } from '../voxels'
+import { blob, box, decorate, detail, slab } from './shapes'
 import type { SceneDef } from './types'
 
-/** Tall swaying bamboo in clumps, with a stepping-stone path winding through. */
+/** Tall swaying bamboo in clumps, a stepping-stone path winding through, and sometimes a panda. */
 export const bamboo: SceneDef = {
   group: 'nature',
   id: 'bamboo',
@@ -28,7 +28,8 @@ export const bamboo: SceneDef = {
     for (let i = 0; i < clumps; i++) {
       const cx = rng.int(2, size - 3)
       const cz = rng.int(2, size - 3)
-      for (let k = rng.int(4, 8); k > 0; k--) {
+      // Denser clumps on bigger QRs.
+      for (let k = rng.int(4, 8) + Math.round(size / 12); k > 0; k--) {
         const x = cx + rng.int(-2, 2)
         const z = cz + rng.int(-2, 2)
         const t = along ? x : z
@@ -39,6 +40,38 @@ export const bamboo: SceneDef = {
         for (let y = 2; y < 2 + h; y++) grid.set(x, y, z, (y - 2) % 4 === 3 ? 'grass' : 'leaf')
         blob(grid, [x + rng.int(-1, 1), 2 + h, z + rng.int(-1, 1)], rng.int(1, 2), 'leaf', 0.6, 40)
       }
+    }
+    // A panda munching a shoot on the path: always on big QRs, sometimes on small ones.
+    if (size >= 37 || rng.chance(0.5)) {
+      const t = Math.round(size / 2)
+      const p = pathAt(t)
+      const at = (u: number, v: number): [number, number] => (along ? [t + u, p + v] : [p + v, t + u])
+      const fill = (
+        u0: number,
+        y0: number,
+        v0: number,
+        u1: number,
+        y1: number,
+        v1: number,
+        m: Material | null,
+      ) => {
+        const [x0, z0] = at(u0, v0)
+        const [x1, z1] = at(u1, v1)
+        box(grid, Math.min(x0, x1), y0, Math.min(z0, z1), Math.max(x0, x1), y1, Math.max(z0, z1), m)
+      }
+      fill(-3, 2, -3, 3, size, 3, null) // clear any bamboo leaves out of its way
+      fill(-2, 2, -2, 2, 3, 2, 'grass')
+      fill(-2, 4, -2, 2, 6, 2, 'snow') // body
+      fill(-2, 4, -2, -2, 5, -1, 'roof') // legs
+      fill(2, 4, -2, 2, 5, -1, 'roof')
+      fill(-2, 6, -1, 2, 6, 0, 'roof') // shoulder band
+      fill(-1, 7, -2, 1, 9, 0, 'snow') // head
+      fill(-1, 8, -2, -1, 8, -2, 'roof') // eye patches
+      fill(1, 8, -2, 1, 8, -2, 'roof')
+      fill(-1, 10, -1, -1, 10, -1, 'roof') // ears
+      fill(1, 10, -1, 1, 10, -1, 'roof')
+      fill(0, 7, -3, 0, 7, -3, 'roof') // nose
+      fill(2, 5, -3, 2, 9, -3, 'leaf') // bamboo shoot in its paw
     }
     decorate(grid, rng)
     return grid

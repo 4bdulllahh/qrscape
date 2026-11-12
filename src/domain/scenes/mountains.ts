@@ -47,7 +47,7 @@ export const mountains: SceneDef = {
       }
 
     // Pines on the low grass.
-    for (let i = detail(size, rng.int(3, 6)); i > 0; i--) {
+    for (let i = detail(size, rng.int(5, 8)); i > 0; i--) {
       const x = rng.int(1, size - 2)
       const z = rng.int(1, size - 2)
       const y = grid.topY(x, z)
@@ -55,6 +55,39 @@ export const mountains: SceneDef = {
       const h = rng.int(3, 5)
       box(grid, x, y + 1, z, x, y + 1, z, 'trunk')
       for (let k = 0; k < h; k++) blob(grid, [x, y + 2 + k, z], Math.max(0.6, (h - k) * 0.55), 'leaf', 0.3, 0)
+    }
+    // Boulders on the slopes.
+    for (let i = detail(size, 2); i > 0; i--) {
+      const x = rng.int(1, size - 2)
+      const z = rng.int(1, size - 2)
+      if (grid.get(x, grid.topY(x, z), z) === 'stone')
+        blob(grid, [x, grid.topY(x, z) + 1, z], rng.int(1, 2), 'stone', 0.7, 20)
+    }
+    // A boat on the lake and, on bigger QRs, a little red-roofed cabin on a flat patch of grass.
+    if (grid.get(Math.round(lake.x), 0, Math.round(lake.z)) === 'water')
+      box(
+        grid,
+        Math.round(lake.x) - 1,
+        1,
+        Math.round(lake.z),
+        Math.round(lake.x) + 1,
+        1,
+        Math.round(lake.z),
+        'wood',
+      )
+    for (let tries = size >= 33 ? 40 : 0; tries > 0; tries--) {
+      const x = rng.int(3, size - 4)
+      const z = rng.int(3, size - 4)
+      const y = grid.topY(x, z)
+      const flat = [-2, 2].every((dx) =>
+        [-2, 2].every((dz) => grid.topY(x + dx, z + dz) === y && grid.get(x + dx, y, z + dz) === 'grass'),
+      )
+      if (!flat || grid.get(x, y, z) !== 'grass') continue
+      box(grid, x - 1, y + 1, z - 1, x + 1, y + 2, z + 1, 'wood')
+      grid.set(x, y + 1, z + 1, 'trunk')
+      box(grid, x - 2, y + 3, z - 2, x + 2, y + 3, z + 2, 'accent')
+      box(grid, x - 1, y + 4, z - 1, x + 1, y + 4, z + 1, 'accent')
+      break
     }
     decorate(grid, rng)
     return grid

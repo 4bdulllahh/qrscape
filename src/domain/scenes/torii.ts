@@ -2,10 +2,11 @@ import { VoxelGrid } from '../voxels'
 import { blob, box, decorate, detail, slab } from './shapes'
 import type { SceneDef } from './types'
 
-/** A red torii gate standing in calm water, a sandy shore with stone lanterns behind it. */
+/** A red torii gate in calm water: shore with lanterns and steps, a shrine hall on wide shores, a boat and koi. */
 export const torii: SceneDef = {
   group: 'city',
   id: 'torii',
+  creatures: ['bird', 'fish', 'butterfly'],
   build(size, rng) {
     const grid = new VoxelGrid(size, size)
     slab(grid, 0, 0, 'water')
@@ -46,6 +47,29 @@ export const torii: SceneDef = {
     put(c - half - 4, h + 2, v - 1, c + half + t + 4, h + 2, v + t + 1, 'roof')
     put(c - half - 4, h + 3, v - 1, c - half - 3, h + 3, v + t + 1, 'roof')
     put(c + half + t + 3, h + 3, v - 1, c + half + t + 4, h + 3, v + t + 1, 'roof')
+
+    // Stone steps down to the water, a shrine hall on a wide shore, a rowing boat.
+    put(c - 1, 1, shore - 2, c + 1, 1, shore, 'stone')
+    if (shore >= 14) {
+      put(c - 4, 2, 1, c + 4, 2, 6, 'wood')
+      put(c - 3, 3, 2, c + 3, 5, 5, 'wood')
+      for (const [u, w] of [
+        [c - 3, 2],
+        [c + 3, 2],
+        [c - 3, 5],
+        [c + 3, 5],
+      ] as const)
+        put(u, 3, w, u, 5, w, 'accent')
+      put(c - 1, 3, 5, c + 1, 4, 5, 'cloth')
+      put(c - 5, 6, 0, c + 5, 6, 7, 'roof')
+      put(c - 4, 7, 1, c + 4, 7, 6, 'roof')
+      put(c - 2, 8, 2, c + 2, 8, 5, 'roof')
+    }
+    const bu = rng.int(2, size - 7)
+    const bv = rng.int(shore + 3, size - 4)
+    put(bu, 1, bv, bu + 4, 1, bv + 1, 'wood')
+    put(bu, 2, bv, bu, 2, bv + 1, 'wood')
+    put(bu + 4, 2, bv, bu + 4, 2, bv + 1, 'wood')
 
     // A few rocks breaking the water.
     for (let i = detail(size, rng.int(2, 4)); i > 0; i--)
