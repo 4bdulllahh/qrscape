@@ -83,6 +83,8 @@ export interface TreeOptions {
   /** Canopy squash: 0.7 round, 0.35 flat pads. */
   flat?: number
   branches?: [number, number]
+  /** How far branches reach, as a multiple of the canopy radius (1 = compact, 2+ = wide airy crown). */
+  reach?: number
 }
 
 /** A seeded tree standing on (x, baseY, z). Shared by tree, bonsai and cherry blossom. */
@@ -114,7 +116,7 @@ export function growTree(
   for (let i = 0; i < count; i++) {
     const from = forks[rng.int(0, forks.length - 1)] ?? top
     const angle = turn + (i / count) * Math.PI * 2 + (rng.next() - 0.5) * 0.6
-    const reach = o.canopy * (0.8 + rng.next() * 0.6)
+    const reach = o.canopy * (0.8 + rng.next() * 0.6) * (o.reach ?? 1)
     const end: Vec = [
       Math.round(from[0] + Math.cos(angle) * reach),
       Math.min(ceiling, Math.round(from[1] + reach * (0.3 + rng.next() * 0.5))),

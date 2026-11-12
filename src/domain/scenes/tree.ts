@@ -1,8 +1,8 @@
 import { VoxelGrid } from '../voxels'
-import { decorate, detail, growTree, scatter } from './shapes'
+import { blob, decorate, detail, growTree, scatter } from './shapes'
 import type { SceneDef } from './types'
 
-/** A grassy island with one seeded tree: lean, branch count, canopy size and stones all come from the seed. */
+/** A grassy island with one big bushy tree: lean, branches, crown size and stones all come from the seed. */
 export const tree: SceneDef = {
   group: 'nature',
   id: 'tree',
@@ -19,12 +19,21 @@ export const tree: SceneDef = {
         grid.set(x, h, z, 'grass')
       }
 
+    // A tall, airy crown of many leaf clusters on long branches, like a big old garden tree.
+    // Branch count follows the QR area, so long links grow fuller trees.
+    const height = Math.round(size * (0.42 + rng.next() * 0.1))
+    const canopy = Math.max(4, Math.round(size * (0.1 + rng.next() * 0.03)))
     growTree(grid, rng, Math.round(mid), 3, Math.round(mid), {
-      height: Math.round(size * (0.32 + rng.next() * 0.12)),
-      canopy: Math.max(3, Math.round(size * (0.13 + rng.next() * 0.05))),
-      thick: size >= 33 ? 2 : 1,
+      height,
+      canopy,
+      thick: Math.max(1, Math.round(size / 22)),
       leaf: 'leaf',
+      branches: [Math.max(7, detail(size, 3)), Math.max(9, detail(size, 4))],
+      reach: 1.8,
+      flat: 0.8,
     })
+    // A dense core so the clusters read as one bushy crown, not separate balls.
+    blob(grid, [Math.round(mid), 3 + Math.round(height * 0.9), Math.round(mid)], canopy * 1.5, 'leaf', 0.7)
     scatter(grid, rng, detail(size, rng.int(2, 4)), 'stone', ['grass'])
     decorate(grid, rng)
     return grid

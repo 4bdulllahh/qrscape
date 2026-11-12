@@ -137,7 +137,7 @@ another origin, axe clean. The user confirmed it works, including on their phone
 
 ## Current state
 
-Plan v0.2.0 (approved 2026-11-12, 22 milestones). Done: M1 to M6.
+Plan v0.2.0 (approved 2026-11-12, 22 milestones). Done: M1 to M7.
 
 | #   | Milestone                                                                                              | Size |
 | --- | ------------------------------------------------------------------------------------------------------ | ---- |
@@ -168,5 +168,5 @@ Decisions for this plan: reworked scenes may change already pasted embeds (user 
 Each scene milestone adds its own creatures. New scenes get `group: 'nature' | 'city'` in their `SceneDef`.
 The scene picker is a custom listbox (`src/ui/ScenePicker.tsx`); scripts drive it through `scripts/picker.mjs`.
 
-- **Next:** M7 (look at tree.icqr.com in Edge first). Creatures: `src/domain/creatures.ts` places them (own rng), `SceneDef.creatures` picks kinds, they travel in `ColoredVoxels.creatures`, `renderer.ts` draws them (PARTS, FLIGHT) and fades them early in the morph, so site, GIF and embed all show them. The GIF clock jumps back during the QR hold so the loop is seamless.
+- **Next:** M8. tree.icqr reference: a tall airy tree about 1.3x the ground width, many leaf clusters on thin branches, grass border. `growTree` has a `reach` option for wide crowns. Creatures: `src/domain/creatures.ts` places them (own rng), `SceneDef.creatures` picks kinds, they travel in `ColoredVoxels.creatures`, `renderer.ts` draws them (PARTS, FLIGHT) and fades them early in the morph, so site, GIF and embed all show them. The GIF clock jumps back during the QR hold so the loop is seamless.
 - **Known issues:** more than about 16 embeds on one page fail (browser limit on WebGL canvases). No `.ico` favicon.
