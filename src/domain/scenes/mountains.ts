@@ -1,5 +1,5 @@
 import { VoxelGrid } from '../voxels'
-import { blob, box, hash3 } from './shapes'
+import { blob, box, decorate, detail, hash3 } from './shapes'
 import type { SceneDef } from './types'
 
 /** Seeded peaks with snow caps, rocky slopes, a lake in the lowest spot and a few pines. */
@@ -46,7 +46,7 @@ export const mountains: SceneDef = {
       }
 
     // Pines on the low grass.
-    for (let i = rng.int(3, 7); i > 0; i--) {
+    for (let i = detail(size, rng.int(3, 6)); i > 0; i--) {
       const x = rng.int(1, size - 2)
       const z = rng.int(1, size - 2)
       const y = grid.topY(x, z)
@@ -55,6 +55,7 @@ export const mountains: SceneDef = {
       box(grid, x, y + 1, z, x, y + 1, z, 'trunk')
       for (let k = 0; k < h; k++) blob(grid, [x, y + 2 + k, z], Math.max(0.6, (h - k) * 0.55), 'leaf', 0.3, 0)
     }
+    decorate(grid, rng)
     return grid
   },
 }

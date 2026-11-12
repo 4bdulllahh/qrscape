@@ -1,5 +1,5 @@
 import { VoxelGrid } from '../voxels'
-import { slab } from './shapes'
+import { detail, slab } from './shapes'
 import type { SceneDef } from './types'
 
 /** A round glass bowl on a table: gravel, a water plant and seeded fish swimming at the surface. */
@@ -39,7 +39,7 @@ export const fishbowl: SceneDef = {
     }
 
     // Fish at the surface: a 3-voxel body with a tail, pointing a seeded way.
-    for (let i = rng.int(2, 4); i > 0; i--) {
+    for (let i = detail(size, rng.int(2, 3)); i > 0; i--) {
       const fx = Math.round(c + rng.int(-Math.floor(R / 2), Math.floor(R / 2)))
       const fz = Math.round(c + rng.int(-Math.floor(R / 2), Math.floor(R / 2)))
       const along = rng.chance(0.5)

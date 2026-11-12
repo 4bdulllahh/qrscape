@@ -1,5 +1,5 @@
 import { VoxelGrid } from '../voxels'
-import { blob, box, hash3, slab } from './shapes'
+import { blob, box, decorate, detail, hash3, slab } from './shapes'
 import type { SceneDef } from './types'
 
 /** A sunken pond with a stone edge, lily pads, koi and a small wooden bridge. */
@@ -27,12 +27,12 @@ export const koipond: SceneDef = {
       }
 
     // Lily pads and koi float on the surface.
-    for (let i = rng.int(3, 6); i > 0; i--) {
+    for (let i = detail(size, rng.int(3, 5)); i > 0; i--) {
       const x = Math.round(c + (rng.next() - 0.5) * R * 1.4)
       const z = Math.round(c + (rng.next() - 0.5) * R * 1.4)
       if (grid.get(x, 1, z) === 'water') blob(grid, [x, 1, z], rng.int(1, 2), 'leaf', 0.1, 0)
     }
-    for (let i = rng.int(3, 5); i > 0; i--) {
+    for (let i = detail(size, rng.int(2, 4)); i > 0; i--) {
       const x = Math.round(c + (rng.next() - 0.5) * R * 1.2)
       const z = Math.round(c + (rng.next() - 0.5) * R * 1.2)
       const dx = rng.chance(0.5) ? 1 : 0
@@ -53,6 +53,7 @@ export const koipond: SceneDef = {
         if (Math.abs(w) === 1 && t % 3 === 0) grid.set(x, y + 1, z, 'wood')
       }
     }
+    decorate(grid, rng)
     return grid
   },
 }

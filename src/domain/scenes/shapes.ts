@@ -136,3 +136,25 @@ export function scatter(grid: VoxelGrid, rng: Rng, count: number, material: Mate
     if (below && on.includes(below)) grid.set(x, y + 1, z, material)
   }
 }
+
+/** Smallest QR the site makes: version 1 (21 cells) plus the 2-cell quiet zone on each side. */
+const SMALLEST = 25
+
+/** A detail count that grows with the QR's area: `base` on the smallest QR, about 6x on a long link. */
+export function detail(size: number, base: number): number {
+  return Math.round(base * (size / SMALLEST) ** 2)
+}
+
+/** Finishing touches on open ground: grass tufts, flowers and pebbles. Long links get more of them. */
+export function decorate(grid: VoxelGrid, rng: Rng, amount = 1): void {
+  for (let i = detail(grid.size, 8 * amount); i > 0; i--) {
+    const x = rng.int(1, grid.size - 2)
+    const z = rng.int(1, grid.size - 2)
+    const y = grid.topY(x, z)
+    const top = grid.get(x, y, z)
+    const roll = rng.next()
+    if (top === 'grass')
+      grid.set(x, y + 1, z, roll < 0.4 ? 'grass' : roll < 0.65 ? 'petal' : roll < 0.8 ? 'accent' : 'stone')
+    else if (top === 'sand' && roll < 0.4) grid.set(x, y + 1, z, 'stone')
+  }
+}

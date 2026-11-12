@@ -14,4 +14,5 @@ export async function sceneList(page) {
 export async function pickScene(page, id) {
   await button(page).click()
   await page.locator(`[role=option][data-value="${id}"]`).click()
+  await page.mouse.move(0, 0) // a pointer left over the world would turn it into the QR
 }

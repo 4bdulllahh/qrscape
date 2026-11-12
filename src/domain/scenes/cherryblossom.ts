@@ -1,5 +1,5 @@
 import { VoxelGrid } from '../voxels'
-import { box, growTree, scatter, slab } from './shapes'
+import { box, decorate, detail, growTree, scatter, slab } from './shapes'
 import type { SceneDef } from './types'
 
 /** A wide pink blossom tree over a lawn with fallen petals and a wooden bench. */
@@ -22,7 +22,7 @@ export const cherryblossom: SceneDef = {
       flat: 0.55,
       branches: [4, 6],
     })
-    scatter(grid, rng, Math.round(size * 1.5), 'petal', ['grass'])
+    scatter(grid, rng, detail(size, 40), 'petal', ['grass'])
 
     // Bench facing the tree: seat on two legs.
     const bx = rng.chance(0.5) ? 3 : size - 9
@@ -30,6 +30,7 @@ export const cherryblossom: SceneDef = {
     box(grid, bx, 2, bz, bx, 2, bz, 'wood')
     box(grid, bx + 5, 2, bz, bx + 5, 2, bz, 'wood')
     box(grid, bx, 3, bz, bx + 5, 3, bz, 'wood')
+    decorate(grid, rng)
     return grid
   },
 }

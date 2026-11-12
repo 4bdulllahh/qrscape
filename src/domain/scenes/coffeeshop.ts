@@ -1,5 +1,5 @@
 import { VoxelGrid } from '../voxels'
-import { blob, box, slab } from './shapes'
+import { blob, box, decorate, slab } from './shapes'
 import type { SceneDef } from './types'
 
 /** A little corner café: big window, striped awning, tables with cups outside, plants by the door. */
@@ -47,6 +47,7 @@ export const coffeeshop: SceneDef = {
       box(grid, x, 1, z1 + 1, x, 2, z1 + 1, 'pot')
       blob(grid, [x, 4, z1 + 1], 1.6, 'leaf', 0.9, 20)
     }
+    decorate(grid, rng)
     return grid
   },
 }

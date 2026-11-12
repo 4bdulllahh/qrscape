@@ -1,5 +1,5 @@
 import { VoxelGrid } from '../voxels'
-import { box, slab } from './shapes'
+import { box, decorate, slab } from './shapes'
 import type { SceneDef } from './types'
 
 /** A ramen cart on wheels: canopy roof, noren, red lanterns, stools and a steaming bowl. */
@@ -51,6 +51,7 @@ export const ramenstall: SceneDef = {
       box(grid, x, 1, z1 + 5, x, 3, z1 + 5, 'wood')
       box(grid, x - 1, 4, z1 + 4, x + 1, 4, z1 + 6, 'wood')
     }
+    decorate(grid, rng)
     return grid
   },
 }

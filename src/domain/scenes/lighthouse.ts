@@ -1,5 +1,5 @@
 import { VoxelGrid } from '../voxels'
-import { blob, box, cylinder, hash3, slab } from './shapes'
+import { blob, box, cylinder, decorate, hash3, slab } from './shapes'
 import type { SceneDef } from './types'
 
 /** A small rocky island in the sea with a striped lighthouse and a keeper's cottage. */
@@ -47,6 +47,7 @@ export const lighthouse: SceneDef = {
     box(grid, hx - 2, 4, hz - 2, hx + 2, 6, hz + 2, 'wood')
     for (let i = 0; i <= 3; i++) box(grid, hx - 3 + i, 7 + i, hz - 3, hx + 3 - i, 7 + i, hz + 3, 'roof')
     blob(grid, [Math.round(c - R * 0.4), 5, Math.round(c - R * 0.3)], 2, 'leaf')
+    decorate(grid, rng)
     return grid
   },
 }

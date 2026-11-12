@@ -1,5 +1,5 @@
 import { VoxelGrid } from '../voxels'
-import { blob, box, slab } from './shapes'
+import { blob, box, decorate, detail, slab } from './shapes'
 import type { SceneDef } from './types'
 
 /** A red torii gate standing in calm water, a sandy shore with stone lanterns behind it. */
@@ -48,8 +48,9 @@ export const torii: SceneDef = {
     put(c + half + t + 3, h + 3, v - 1, c + half + t + 4, h + 3, v + t + 1, 'roof')
 
     // A few rocks breaking the water.
-    for (let i = rng.int(2, 4); i > 0; i--)
+    for (let i = detail(size, rng.int(2, 4)); i > 0; i--)
       blob(grid, [rng.int(2, size - 3), 0, rng.int(shore + 3, size - 3)], rng.int(1, 2), 'stone', 0.7, 20)
+    decorate(grid, rng)
     return grid
   },
 }

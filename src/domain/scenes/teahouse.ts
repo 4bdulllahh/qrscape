@@ -1,5 +1,5 @@
 import { VoxelGrid } from '../voxels'
-import { blob, box, slab } from './shapes'
+import { blob, box, decorate, slab } from './shapes'
 import type { SceneDef } from './types'
 
 /** A small raised tea house: paper walls in a wooden frame, a stepped tiled roof and a stone path. */
@@ -52,6 +52,7 @@ export const teahouse: SceneDef = {
     // Stepping stones from the door to the front edge, and a round bush.
     for (let z = z1 + 3; z < size - 1; z += 2) box(grid, c - 1, 2, z, c, 2, z, 'stone')
     blob(grid, [rng.chance(0.5) ? 4 : size - 5, 3, size - 5], Math.max(2, Math.round(size * 0.07)), 'leaf')
+    decorate(grid, rng)
     return grid
   },
 }

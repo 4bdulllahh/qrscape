@@ -1,5 +1,5 @@
 import { VoxelGrid } from '../voxels'
-import { blob, slab } from './shapes'
+import { blob, decorate, detail, slab } from './shapes'
 import type { SceneDef } from './types'
 
 /** Tall swaying bamboo in clumps, with a stepping-stone path winding through. */
@@ -24,7 +24,7 @@ export const bamboo: SceneDef = {
       }
     }
 
-    const clumps = rng.int(7, 10)
+    const clumps = detail(size, rng.int(5, 7))
     for (let i = 0; i < clumps; i++) {
       const cx = rng.int(2, size - 3)
       const cz = rng.int(2, size - 3)
@@ -40,6 +40,7 @@ export const bamboo: SceneDef = {
         blob(grid, [x + rng.int(-1, 1), 2 + h, z + rng.int(-1, 1)], rng.int(1, 2), 'leaf', 0.6, 40)
       }
     }
+    decorate(grid, rng)
     return grid
   },
 }

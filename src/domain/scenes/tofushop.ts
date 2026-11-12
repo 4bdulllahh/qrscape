@@ -1,5 +1,5 @@
 import { VoxelGrid } from '../voxels'
-import { box, cylinder, slab } from './shapes'
+import { box, cylinder, decorate, slab } from './shapes'
 import type { SceneDef } from './types'
 
 /** An old wooden tofu shop: gable roof, noren curtain, a red lantern, a water tub and crates of tofu. */
@@ -49,6 +49,7 @@ export const tofushop: SceneDef = {
     const tz = bz + rng.int(1, 3)
     cylinder(grid, tx, tz, 1, 3, 2.4, 'wood')
     cylinder(grid, tx, tz, 3, 3, 1.5, 'water')
+    decorate(grid, rng)
     return grid
   },
 }

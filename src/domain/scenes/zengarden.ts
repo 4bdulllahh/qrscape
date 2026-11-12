@@ -1,5 +1,5 @@
 import { VoxelGrid } from '../voxels'
-import { blob, box, slab } from './shapes'
+import { blob, box, detail, slab } from './shapes'
 import type { SceneDef } from './types'
 
 /** Raked sand with ripples around mossy rocks, inside a low wooden border. */
@@ -9,7 +9,7 @@ export const zengarden: SceneDef = {
   build(size, rng) {
     const grid = new VoxelGrid(size, size)
     slab(grid, 0, 0, 'sand')
-    const rocks = Array.from({ length: rng.int(3, 5) }, () => ({
+    const rocks = Array.from({ length: detail(size, rng.int(2, 4)) }, () => ({
       x: rng.int(size * 0.2, size * 0.8),
       z: rng.int(size * 0.2, size * 0.8),
       r: rng.int(2, Math.max(2, Math.round(size * 0.08))),

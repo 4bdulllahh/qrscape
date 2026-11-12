@@ -1,5 +1,5 @@
 import { VoxelGrid } from '../voxels'
-import { growTree, scatter } from './shapes'
+import { decorate, detail, growTree, scatter } from './shapes'
 import type { SceneDef } from './types'
 
 /** A grassy island with one seeded tree: lean, branch count, canopy size and stones all come from the seed. */
@@ -25,7 +25,8 @@ export const tree: SceneDef = {
       thick: size >= 33 ? 2 : 1,
       leaf: 'leaf',
     })
-    scatter(grid, rng, rng.int(2, 5), 'stone', ['grass'])
+    scatter(grid, rng, detail(size, rng.int(2, 4)), 'stone', ['grass'])
+    decorate(grid, rng)
     return grid
   },
 }

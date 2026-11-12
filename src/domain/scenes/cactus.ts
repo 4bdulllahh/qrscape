@@ -1,5 +1,5 @@
 import { VoxelGrid } from '../voxels'
-import { box, cylinder, scatter, slab } from './shapes'
+import { box, cylinder, detail, scatter, slab } from './shapes'
 import type { SceneDef } from './types'
 
 /** A chunky cactus with 2 or 3 seeded arms and a flower, in a terracotta pot on a table with pebbles. */
@@ -45,7 +45,7 @@ export const cactus: SceneDef = {
     box(grid, cx - 1, base + h + 1, cx, cx + 1, base + h + 1, cx, 'petal')
     box(grid, cx, base + h + 1, cx - 1, cx, base + h + 2, cx + 1, 'petal')
 
-    scatter(grid, rng, rng.int(6, 12), 'stone', ['wood'])
+    scatter(grid, rng, detail(size, rng.int(6, 10)), 'stone', ['wood'])
     return grid
   },
 }
