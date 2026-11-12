@@ -49,7 +49,7 @@ export function SceneView({ voxels, showQr }: Props) {
       onPointerLeave={() => hover(false)}
       onFocus={() => hover(true)}
       onBlur={() => hover(false)}
-      className="rounded-panel focus-visible:outline-accent aspect-square w-full max-w-[560px] touch-pan-y focus-visible:outline-2"
+      className="rounded-panel focus-visible:outline-accent aspect-square w-full max-w-[560px] touch-pan-y focus-visible:outline-2 lg:max-w-[min(560px,calc(100dvh-15rem))]"
     />
   )
 }

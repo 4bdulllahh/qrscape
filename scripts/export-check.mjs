@@ -15,6 +15,7 @@ const errors = []
 p.on('pageerror', (e) => errors.push(e.message))
 await p.goto(url)
 await p.getByRole('textbox', { name: 'Your link' }).fill(link)
+await p.getByRole('tab', { name: 'Download' }).click()
 
 async function save(button, timeout) {
   const started = Date.now()

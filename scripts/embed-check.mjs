@@ -11,6 +11,7 @@ const b = await chromium.launch({
 const site = await b.newPage()
 await site.goto(process.argv[3] ?? 'http://localhost:4173')
 await site.getByRole('textbox', { name: 'Your link' }).fill('https://abdullahexe.online')
+await site.getByRole('tab', { name: 'Website code' }).click()
 await site.getByText('Large (400 px)').click()
 const code = await site.locator('pre code').innerText()
 console.log(code)
