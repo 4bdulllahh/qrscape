@@ -69,6 +69,8 @@ export const strings = {
   scene_waterfall: 'Waterfall',
   scene_onsen: 'Hot spring',
   scene_riceterraces: 'Rice terraces',
+  scene_fuji: 'Mount Fuji',
+  scene_lilypond: 'Lily pond',
   palette_day: 'Day',
   palette_blossom: 'Blossom',
   palette_autumn: 'Autumn',

@@ -1,3 +1,5 @@
+import { lilypond } from './lilypond'
+import { fuji } from './fuji'
 import { riceterraces } from './riceterraces'
 import { onsen } from './onsen'
 import { waterfall } from './waterfall'
@@ -48,4 +50,6 @@ export const SCENES: readonly SceneDef[] = [
   waterfall,
   onsen,
   riceterraces,
+  fuji,
+  lilypond,
 ]
