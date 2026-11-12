@@ -1,12 +1,12 @@
 import { VoxelGrid } from '../voxels'
-import { detail, slab } from './shapes'
+import { blob, detail, hash3, slab } from './shapes'
 import type { SceneDef } from './types'
 
-/** A round glass bowl on a table: gravel, a water plant and seeded fish swimming at the surface. */
+/** A round glass bowl on a table: gravel, seaweed, a rock cave and fish swimming at the surface. */
 export const fishbowl: SceneDef = {
   group: 'nature',
   id: 'fishbowl',
-  creatures: ['butterfly'],
+  creatures: ['fish'],
   build(size, rng) {
     const grid = new VoxelGrid(size, size)
     slab(grid, 0, 0, 'wood')
@@ -22,22 +22,36 @@ export const fishbowl: SceneDef = {
         for (let x = 0; x < size; x++) {
           const d = Math.hypot(x - c, z - c)
           if (d > r) continue
-          // Glass only at the base, the rim and 8 thin ribs, so the water and fish show through.
-          const rib = Math.round((Math.atan2(z - c, x - c) / (Math.PI * 2)) * 48) % 6 === 0
-          if (y <= 1 || (d > r - 1.2 && (y >= rimY || rib))) grid.set(x, y, z, 'glass')
-          else if (y === 2) grid.set(x, y, z, 'sand')
+          // Glass at the base and rim; a curved shine down one side, like light on real glass.
+          const angle = Math.atan2(z - c, x - c)
+          const shine = d > r - 1.2 && Math.abs(angle - 2.2) < 0.18 && y > 3 && y < rimY - 1
+          if (y <= 1 || (d > r - 1.2 && y >= rimY)) grid.set(x, y, z, 'glass')
+          else if (shine) grid.set(x, y, z, 'snow')
+          else if (y === 2) grid.set(x, y, z, hash3(x, y, z) < 30 ? 'stone' : 'sand')
           else if (y <= waterY) grid.set(x, y, z, 'water')
         }
     }
 
-    // Water plant: a wavy stalk that pokes out of the water.
-    const px = Math.round(c + rng.int(-3, 3))
-    const pz = Math.round(c + rng.int(-3, 3))
-    let wx = px
-    for (let y = 3; y <= waterY + 2; y++) {
-      if (rng.chance(0.4)) wx += rng.int(-1, 1)
-      grid.set(wx, y, pz, 'leaf')
+    // Seaweed: wavy stalks, a couple poking out of the water. More of them in bigger bowls.
+    for (let i = Math.max(2, detail(size, 1)); i > 0; i--) {
+      const a = rng.next() * Math.PI * 2
+      const dist = rng.next() * R * 0.6
+      let wx = Math.round(c + Math.cos(a) * dist)
+      const pz = Math.round(c + Math.sin(a) * dist)
+      const top = waterY + (i <= 2 ? 2 : -rng.int(1, 3))
+      for (let y = 3; y <= top; y++) {
+        if (rng.chance(0.4)) wx += rng.int(-1, 1)
+        grid.set(wx, y, pz, 'leaf')
+      }
     }
+    // A little rock cave on the gravel.
+    blob(
+      grid,
+      [Math.round(c + rng.int(-3, 3)), 3, Math.round(c + rng.int(-3, 3))],
+      Math.max(2, R * 0.18),
+      'stone',
+      0.8,
+    )
 
     // Fish at the surface: a 3-voxel body with a tail, pointing a seeded way.
     for (let i = detail(size, rng.int(2, 3)); i > 0; i--) {

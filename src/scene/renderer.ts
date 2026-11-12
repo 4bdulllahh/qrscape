@@ -58,21 +58,39 @@ const PARTS: Record<CreatureKind, Part[]> = {
     ...wings([0.3, 0.04, 0.12], [0.55, 0.03, 0.12], 1),
     ...wings([0.28, 0.04, -0.05], [0.5, 0.03, 0.11], 1),
   ],
+  // One flat petal that tumbles as it falls.
+  petal: [{ at: [0, 0, 0], size: [0.35, 0.05, 0.28], color: 0, side: 1 }],
+  fish: [
+    { at: [0, 0, 0], size: [0.32, 0.18, 0.75], color: 0, side: 0 },
+    { at: [0, 0, -0.5], size: [0.28, 0.12, 0.25], color: 0, side: 0 },
+    { at: [0, 0.05, 0.15], size: [0.2, 0.12, 0.25], color: 1, side: 0 },
+  ],
 }
 /** Wing beats per second (radians), wing swing, and size relative to a 35-cell QR. */
 const FLIGHT: Record<CreatureKind, { flap: number; swing: number; scale: number }> = {
   butterfly: { flap: 12, swing: 1, scale: 2 },
   bird: { flap: 5, swing: 0.6, scale: 2 },
   dragonfly: { flap: 40, swing: 0.3, scale: 1.8 },
+  petal: { flap: 3, swing: 1.2, scale: 1.6 },
+  fish: { flap: 0, swing: 0, scale: 1.6 },
 }
 
 /** Where a creature is at a moment, in grid units. */
 function flightPoint(c: Creature, time: number): [number, number, number] {
   const t = time * c.speed + c.phase
-  if (c.kind === 'bird')
+  if (c.kind === 'petal') {
+    // Falls from the crown (c.y) to the ground, then starts again inside the leaves.
+    const fallen = (time * c.speed + c.phase) % Math.max(1, c.y - 1)
+    return [
+      c.x + Math.sin(time * 1.3 + c.phase) * c.range + fallen * 0.3,
+      c.y - fallen,
+      c.z + Math.cos(time * 1.1 + c.phase) * c.range,
+    ]
+  }
+  if (c.kind === 'bird' || c.kind === 'fish')
     return [
       c.x + Math.cos(t) * c.range,
-      c.y + Math.sin(time * 0.7 + c.phase) * 0.5,
+      c.y + (c.kind === 'bird' ? Math.sin(time * 0.7 + c.phase) * 0.5 : 0),
       c.z + Math.sin(t) * c.range,
     ]
   return [

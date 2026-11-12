@@ -2,7 +2,7 @@ import { detail } from './scenes/shapes'
 import type { Rng } from './seed'
 import type { Material, Palette, VoxelGrid } from './voxels'
 
-export const CREATURE_KINDS = ['butterfly', 'bird', 'dragonfly'] as const
+export const CREATURE_KINDS = ['butterfly', 'bird', 'dragonfly', 'petal', 'fish'] as const
 export type CreatureKind = (typeof CREATURE_KINDS)[number]
 
 /**
@@ -77,6 +77,39 @@ export function makeCreatures(
           phase: rng.next() * 100,
           colors: [side('stone'), side('snow')],
         })
+    else if (kind === 'petal')
+      // Falling blossom: starts in the crown, drifts down to the ground, starts again (hidden in the leaves).
+      for (let i = Math.min(16, detail(size, 4)); i > 0; i--) {
+        const at = spot(['petal'])
+        if (!at) break
+        const petal = side('petal')
+        out.push({
+          kind,
+          x: at.x,
+          y: at.y,
+          z: at.z,
+          range: 1 + rng.next() * 2,
+          speed: 0.8 + rng.next() * 0.5,
+          phase: rng.next() * 100,
+          colors: [petal, petal],
+        })
+      }
+    else if (kind === 'fish')
+      // Swims in small circles at the water surface.
+      for (let i = Math.min(6, Math.max(2, detail(size, 1.5))); i > 0; i--) {
+        const at = spot(['water', 'fish'])
+        if (!at) break
+        out.push({
+          kind,
+          x: at.x,
+          y: at.y + 0.6,
+          z: at.z,
+          range: 1.2 + rng.next() * 1.5,
+          speed: (0.5 + rng.next() * 0.4) * (rng.chance(0.5) ? 1 : -1),
+          phase: rng.next() * 100,
+          colors: [side('fish'), side('snow')],
+        })
+      }
     else
       for (let i = Math.min(6, detail(size, 1.5)); i > 0; i--) {
         const at = spot(['water'])
